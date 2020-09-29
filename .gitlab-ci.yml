@@ -4,14 +4,26 @@ stages:
   - build
   - test
 
-build:
+android-build:
   image: reactnativecommunity/react-native-android
   stage: build
-  script:
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+      - .gradle/caches/
+      - .gradle/wrapper/
+  before_script:
+    - export GRADLE_USER_HOME=`pwd`/.gradle
+    - npm config set registry https://registry.npm.taobao.org
     - yarn
+  script:
     - cd android && chmod +x gradlew && ./gradlew assembleRelease && cd ..
+  after_script:
     - mkdir outputs
     - mv android/app/build/outputs/apk/release/app-release.apk outputs/door-lock-release.apk
+    - rm -f  .gradle/caches/modules-2/modules-2.lock
+    - rm -fr .gradle/caches/*/plugin-resolution/
   artifacts:
     paths:
       - outputs/
@@ -19,12 +31,10 @@ build:
 .test:
   image: reactnativecommunity/react-native-android
   stage: test
-
   cache:
     key: ${CI_COMMIT_REF_SLUG}
     paths:
       - node_modules/
-
   before_script:
     - npm config set registry https://registry.npm.taobao.org
     - yarn
@@ -43,4 +53,3 @@ style-test:
   extends: .test
   script:
     - yarn lint
-

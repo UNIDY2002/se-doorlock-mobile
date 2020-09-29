@@ -1,0 +1,46 @@
+image: registry.secoder.net/tool/deployer
+
+stages:
+  - build
+  - test
+
+build:
+  image: reactnativecommunity/react-native-android
+  stage: build
+  script:
+    - yarn
+    - cd android && chmod +x gradlew && ./gradlew assembleRelease && cd ..
+    - mkdir outputs
+    - mv android/app/build/outputs/apk/release/app-release.apk outputs/door-lock-release.apk
+  artifacts:
+    paths:
+      - outputs/
+
+.test:
+  image: reactnativecommunity/react-native-android
+  stage: test
+
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+
+  before_script:
+    - npm config set registry https://registry.npm.taobao.org
+    - yarn
+
+unit-test:
+  extends: .test
+  script:
+    - yarn test
+  after_script:
+    - SUFFIX=$RANDOM
+    - curl "http://10.0.0.11/sonar-scanner.tar.gz" -s -o "/tmp/sonar-$SUFFIX.tar.gz"
+    - tar -xf "/tmp/sonar-$SUFFIX.tar.gz"  -C /opt
+    - /opt/sonar-scanner/bin/sonar-scanner
+
+style-test:
+  extends: .test
+  script:
+    - yarn lint
+

@@ -4,15 +4,16 @@ stages:
   - build
   - test
 
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
+    - .gradle/caches/
+    - .gradle/wrapper/
+
 android-build:
   image: reactnativecommunity/react-native-android
   stage: build
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - node_modules/
-      - .gradle/caches/
-      - .gradle/wrapper/
   before_script:
     - export GRADLE_USER_HOME=`pwd`/.gradle
     - npm config set registry https://registry.npm.taobao.org
@@ -31,10 +32,6 @@ android-build:
 .test:
   image: reactnativecommunity/react-native-android
   stage: test
-  cache:
-    key: ${CI_COMMIT_REF_SLUG}
-    paths:
-      - node_modules/
   before_script:
     - npm config set registry https://registry.npm.taobao.org
     - yarn

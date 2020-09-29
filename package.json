@@ -1,0 +1,45 @@
+{
+    "name": "door-lock",
+    "version": "1.0.0",
+    "build": 1,
+    "private": true,
+    "scripts": {
+        "android": "react-native run-android --no-jetifier",
+        "ios": "react-native run-ios",
+        "start": "react-native start",
+        "test": "jest",
+        "lint": "eslint src --ext .js,.jsx,.ts,.tsx",
+        "fix": "eslint src --ext .js,.jsx,.ts,.tsx --fix"
+    },
+    "dependencies": {
+        "react": "16.13.1",
+        "react-native": "0.63.2"
+    },
+    "devDependencies": {
+        "@babel/core": "7.11.6",
+        "@babel/runtime": "7.11.2",
+        "@react-native-community/eslint-config": "2.0.0",
+        "@types/jest": "26.0.14",
+        "@types/react-native": "0.63.22",
+        "@types/react-test-renderer": "16.9.2",
+        "@typescript-eslint/eslint-plugin": "4.2.0",
+        "@typescript-eslint/parser": "4.2.0",
+        "babel-jest": "26.3.0",
+        "eslint": "7.9.0",
+        "jest": "26.4.2",
+        "metro-react-native-babel-preset": "0.63.0",
+        "react-test-renderer": "16.13.1",
+        "typescript": "4.0.3"
+    },
+    "jest": {
+        "preset": "react-native",
+        "moduleFileExtensions": [
+            "ts",
+            "tsx",
+            "js",
+            "jsx",
+            "json",
+            "node"
+        ]
+    }
+}

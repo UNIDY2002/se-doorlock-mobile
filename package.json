@@ -60,6 +60,9 @@
         "transformIgnorePatterns": [
             "node_modules/(?!(react-native|redux-persist|react-native-iphone-x-helper|react-native-gesture-handler|react-native-vector-icons)/)"
         ],
+        "coveragePathIgnorePatterns": [
+            ".+\\.js"
+        ],
         "moduleFileExtensions": [
             "ts",
             "tsx",

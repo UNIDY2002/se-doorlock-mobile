@@ -23,6 +23,7 @@
         "react-native-reanimated": "1.13.1",
         "react-native-safe-area-context": "3.1.8",
         "react-native-screens": "2.11.0",
+        "react-native-vector-icons": "7.1.0",
         "react-redux": "7.2.1",
         "redux": "4.0.5",
         "redux-persist": "6.0.0"
@@ -33,6 +34,7 @@
         "@react-native-community/eslint-config": "2.0.0",
         "@types/jest": "26.0.14",
         "@types/react-native": "0.63.22",
+        "@types/react-native-vector-icons": "6.4.6",
         "@types/react-redux": "7.1.9",
         "@types/react-test-renderer": "16.9.2",
         "@typescript-eslint/eslint-plugin": "4.2.0",
@@ -56,7 +58,7 @@
             "\\.(css|less)$": "<rootDir>/assetsTransformer.js"
         },
         "transformIgnorePatterns": [
-            "node_modules/(?!(react-native|redux-persist|react-native-iphone-x-helper|react-native-gesture-handler)/)"
+            "node_modules/(?!(react-native|redux-persist|react-native-iphone-x-helper|react-native-gesture-handler|react-native-vector-icons)/)"
         ],
         "moduleFileExtensions": [
             "ts",

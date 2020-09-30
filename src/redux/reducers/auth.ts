@@ -8,14 +8,13 @@ export const auth = (
     {type, payload}: AuthAction,
 ): Auth => {
     switch (type) {
-        case DO_LOGIN: {
+        case DO_LOGIN:
             return {
                 ...state,
                 username: payload.username,
                 password: payload.password,
                 loggedIn: true,
             };
-        }
         default:
             return state;
     }

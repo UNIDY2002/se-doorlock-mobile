@@ -29,7 +29,7 @@ export const AuthFlowComponent = ({loggedIn}: {loggedIn: boolean}) =>
         <Tab.Navigator
             screenOptions={({route}) => ({
                 tabBarIcon: ({color, size}) => {
-                    let iconName;
+                    let iconName = "";
 
                     switch (route.name) {
                         case "Users":
@@ -43,9 +43,7 @@ export const AuthFlowComponent = ({loggedIn}: {loggedIn: boolean}) =>
                             break;
                     }
 
-                    return (
-                        <Icon name={iconName || ""} size={size} color={color} />
-                    );
+                    return <Icon name={iconName} size={size} color={color} />;
                 },
             })}
             backBehavior="initialRoute"

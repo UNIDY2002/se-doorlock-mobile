@@ -14,10 +14,11 @@ test("routing", async () => {
     // Press register
     root.findAllByType(Button)[1].props.onPress();
     await sleep(800);
-    expect(root.findAllByType(Button)[2].props.title).toEqual("返回登录");
+    expect(root.findAllByType(Button)[2].props.title).toEqual("注册");
+    expect(root.findAllByType(Button)[3].props.title).toEqual("返回登录");
 
     // Press return to login
-    root.findAllByType(Button)[2].props.onPress();
+    root.findAllByType(Button)[3].props.onPress();
     await sleep(800);
     expect(root.findAllByType(Button).length).toEqual(2);
     expect(root.findAllByType(Button)[0].props.title).toEqual("登录");

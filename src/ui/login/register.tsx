@@ -24,6 +24,7 @@ export const RegisterUI = ({
                     <Icon name="user" size={14} />
                 </View>
                 <TextInput
+                    testID="register-username"
                     style={styles.textInput}
                     defaultValue={username}
                     onChangeText={setUsername}
@@ -42,7 +43,11 @@ export const RegisterUI = ({
                     secureTextEntry
                 />
             </View>
-            <Button title="注册" onPress={() => login(username, password)} />
+            <Button
+                title="注册"
+                disabled={username.length === 0 || password.length === 0}
+                onPress={() => login(username, password)}
+            />
             <Button title="返回登录" onPress={() => navigation.pop()} />
         </View>
     );

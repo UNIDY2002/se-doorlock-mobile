@@ -19,6 +19,9 @@ const LoginUI = ({
 }) => {
     const [username, setUsername] = useState(auth.username);
     const [password, setPassword] = useState(auth.password);
+    if (username !== "" && password !== "") {
+        login(username, password);
+    }
     return (
         <View style={styles.container}>
             <View style={styles.textInputContainer}>

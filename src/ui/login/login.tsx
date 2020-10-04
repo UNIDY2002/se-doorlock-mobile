@@ -47,7 +47,7 @@ const LoginUI = ({
             <Button title="登录" onPress={() => login(username, password)} />
             <Button
                 title="注册"
-                onPress={() => navigation.navigate("Register")}
+                onPress={() => navigation.navigate("Register", {username})}
             />
         </View>
     );

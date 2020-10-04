@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Button, TextInput, View} from "react-native";
-import {LoginNav} from "../../AuthFlow";
+import {LoginNav, LoginRouteProp} from "../../AuthFlow";
 import styles from "../../styles/login";
 import Icon from "react-native-vector-icons/FontAwesome";
 import {connect} from "react-redux";
@@ -8,12 +8,14 @@ import {DO_LOGIN} from "../../redux/constants";
 
 export const RegisterUI = ({
     navigation,
+    route,
     login,
 }: {
     navigation: LoginNav;
+    route: LoginRouteProp;
     login: (username: string, password: string) => void;
 }) => {
-    const [username, setUsername] = useState("");
+    const [username, setUsername] = useState(route.params.username);
     const [password, setPassword] = useState("");
     return (
         <View style={styles.container}>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {Button, TextInput, View} from "react-native";
 import {LoginNav} from "../../AuthFlow";
 import styles from "../../styles/login";
@@ -13,13 +13,20 @@ export const RegisterUI = ({
     navigation: LoginNav;
     login: (username: string, password: string) => void;
 }) => {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
     return (
         <View style={styles.container}>
             <View style={styles.textInputContainer}>
                 <View style={styles.textInputIconContainer}>
                     <Icon name="user" size={14} />
                 </View>
-                <TextInput style={styles.textInput} placeholder="用户名" />
+                <TextInput
+                    style={styles.textInput}
+                    defaultValue={username}
+                    onChangeText={setUsername}
+                    placeholder="用户名"
+                />
             </View>
             <View style={styles.textInputContainer}>
                 <View style={styles.textInputIconContainer}>
@@ -27,11 +34,13 @@ export const RegisterUI = ({
                 </View>
                 <TextInput
                     style={styles.textInput}
+                    defaultValue={password}
+                    onChangeText={setPassword}
                     placeholder="密码"
                     secureTextEntry
                 />
             </View>
-            <Button title="注册" onPress={() => login("", "")} />
+            <Button title="注册" onPress={() => login(username, password)} />
             <Button title="返回登录" onPress={() => navigation.pop()} />
         </View>
     );

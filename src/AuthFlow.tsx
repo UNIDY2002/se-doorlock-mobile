@@ -8,6 +8,7 @@ import {RegisterScreen} from "./ui/login/register";
 import {connect} from "react-redux";
 import {State} from "./redux/store";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import {RouteProp} from "@react-navigation/native";
 import {UsersStack} from "./ui/users/usersStack";
 import {DevicesStack} from "./ui/devices/devicesStack";
 import {AdvancedStack} from "./ui/advanced/advancedStack";
@@ -15,7 +16,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 
 export type LoginStackParamList = {
     Login: undefined;
-    Register: undefined;
+    Register: {username: string};
 };
 
 const Stack = createStackNavigator<LoginStackParamList>();
@@ -24,12 +25,14 @@ const Tab = createBottomTabNavigator();
 
 export type LoginNav = StackNavigationProp<LoginStackParamList>;
 
+export type LoginRouteProp = RouteProp<LoginStackParamList, "Register">;
+
 export const AuthFlowComponent = ({loggedIn}: {loggedIn: boolean}) =>
     loggedIn ? (
         <Tab.Navigator
             screenOptions={({route}) => ({
                 tabBarIcon: ({color, size}) => {
-                    let iconName;
+                    let iconName = "";
 
                     switch (route.name) {
                         case "Users":
@@ -43,9 +46,7 @@ export const AuthFlowComponent = ({loggedIn}: {loggedIn: boolean}) =>
                             break;
                     }
 
-                    return (
-                        <Icon name={iconName || ""} size={size} color={color} />
-                    );
+                    return <Icon name={iconName} size={size} color={color} />;
                 },
             })}
             backBehavior="initialRoute"

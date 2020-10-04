@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {Button, TextInput, View} from "react-native";
 import {LoginNav} from "../../AuthFlow";
 import {connect} from "react-redux";
@@ -19,9 +19,12 @@ const LoginUI = ({
 }) => {
     const [username, setUsername] = useState(auth.username);
     const [password, setPassword] = useState(auth.password);
-    if (username !== "" && password !== "") {
-        login(username, password);
-    }
+    useEffect(() => {
+        if (username !== "" && password !== "") {
+            login(username, password);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return (
         <View style={styles.container}>
             <View style={styles.textInputContainer}>

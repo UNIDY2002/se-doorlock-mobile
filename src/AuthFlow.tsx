@@ -54,9 +54,21 @@ export const AuthFlowComponent = ({loggedIn}: {loggedIn: boolean}) =>
                 activeTintColor: "tomato",
                 inactiveTintColor: "gray",
             }}>
-            <Tab.Screen name="Users" component={UsersStack} />
-            <Tab.Screen name="Devices" component={DevicesStack} />
-            <Tab.Screen name="Advanced" component={AdvancedStack} />
+            <Tab.Screen
+                name="Users"
+                component={UsersStack}
+                options={{title: "用户"}}
+            />
+            <Tab.Screen
+                name="Devices"
+                component={DevicesStack}
+                options={{title: "设备"}}
+            />
+            <Tab.Screen
+                name="Advanced"
+                component={AdvancedStack}
+                options={{title: "高级"}}
+            />
         </Tab.Navigator>
     ) : (
         <Stack.Navigator headerMode="none">

@@ -1,17 +1,31 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {UsersNav} from "./usersStack";
 import {FlatList, Text, TouchableOpacity} from "react-native";
 import {Material} from "../../styles/material";
+import {User} from "../../models/users";
+import {getDoorUsers} from "../../network/users";
+import Snackbar from "react-native-snackbar";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const UserListScreen = ({navigation}: {navigation: UsersNav}) => {
-    const demoList = [
-        {name: "小熊维尼", description: "一只可爱的小熊，跳跳虎的好朋友"},
-        {name: "小猪佩奇", description: "吹风机"},
-    ];
+    const [users, setUsers] = useState<User[]>([]);
+
+    const refresh = () => {
+        getDoorUsers()
+            .then(setUsers)
+            .catch(() =>
+                Snackbar.show({
+                    text: "网络异常，请重试",
+                    duration: Snackbar.LENGTH_SHORT,
+                }),
+            );
+    };
+
+    useEffect(refresh, []);
+
     return (
         <FlatList
-            data={demoList}
+            data={users}
             renderItem={({item}) => (
                 <TouchableOpacity style={Material.card}>
                     <Text style={{fontSize: 20, fontWeight: "bold"}}>

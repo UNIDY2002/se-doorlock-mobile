@@ -8,7 +8,9 @@ require("jest-fetch-mock").enableMocks();
 fetchMock.mockIf(LOGIN_URL, (req) => {
     const {username, password} = JSON.parse(String(req.body));
     return Promise.resolve({
-        status: (username === "super" && password === "123456") ? 200 : 400
+        status: (username === "super" && password === "123456") ? 200 : 400,
+        body: JSON.stringify({access_token: "access_token"}),
+        headers: {"Content-Type": "application/json"},
     });
 });
 

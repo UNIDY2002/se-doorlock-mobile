@@ -8,6 +8,8 @@ import {TextInput} from "react-native";
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 test("routing", async () => {
+    jest.setTimeout(15000);
+
     // Render the app
     const {root} = renderer.create(<App />);
     await act(async () => {});
@@ -30,7 +32,15 @@ test("routing", async () => {
     expect(root.findAllByType(Button)[0].props.title).toEqual("登录");
     expect(root.findAllByType(Button)[1].props.title).toEqual("注册");
 
-    // Press login
+    // Press login and fail
+    root.findAllByType(Button)[0].props.onPress();
+    await sleep(800);
+    expect(root.findAllByProps({name: "Users"}).length).toEqual(0);
+
+    // Press login and succeed
+    root.findByProps({testID: "usernameInput"}).props.onChangeText("super");
+    root.findByProps({testID: "passwordInput"}).props.onChangeText("123456");
+    await sleep(800);
     root.findAllByType(Button)[0].props.onPress();
     await sleep(800);
 

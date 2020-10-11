@@ -7,21 +7,35 @@ import styles from "../../styles/login";
 import Icon from "react-native-vector-icons/FontAwesome";
 import {State} from "../../redux/store";
 import {Auth} from "../../redux/states/auth";
+import {login} from "../../network/login";
+import Snackbar from "react-native-snackbar";
 
 const LoginUI = ({
     navigation,
-    login,
+    doLogin,
     auth,
 }: {
     navigation: LoginNav;
-    login: (username: string, password: string) => void;
+    doLogin: (username: string, password: string) => void;
     auth: Auth;
 }) => {
     const [username, setUsername] = useState(auth.username);
     const [password, setPassword] = useState(auth.password);
+
+    const loginSuite = () => {
+        login(username, password)
+            .then(() => doLogin(username, password))
+            .catch(() =>
+                Snackbar.show({
+                    text: "登录失败，请重试。",
+                    duration: Snackbar.LENGTH_SHORT,
+                }),
+            );
+    };
+
     useEffect(() => {
         if (username !== "" && password !== "") {
-            login(username, password);
+            loginSuite();
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -32,6 +46,7 @@ const LoginUI = ({
                     <Icon name="user" size={14} />
                 </View>
                 <TextInput
+                    testID="usernameInput"
                     style={styles.textInput}
                     defaultValue={username}
                     onChangeText={setUsername}
@@ -43,6 +58,7 @@ const LoginUI = ({
                     <Icon name="key" size={14} />
                 </View>
                 <TextInput
+                    testID="passwordInput"
                     style={styles.textInput}
                     defaultValue={password}
                     onChangeText={setPassword}
@@ -53,7 +69,7 @@ const LoginUI = ({
             <Button
                 title="登录"
                 disabled={username.length === 0 || password.length === 0}
-                onPress={() => login(username, password)}
+                onPress={loginSuite}
             />
             <Button
                 title="注册"
@@ -66,7 +82,7 @@ const LoginUI = ({
 export const LoginScreen = connect(
     (state: State) => ({auth: state.auth}),
     (dispatch) => ({
-        login(username: string, password: string) {
+        doLogin(username: string, password: string) {
             dispatch({type: DO_LOGIN, payload: {username, password}});
         },
     }),

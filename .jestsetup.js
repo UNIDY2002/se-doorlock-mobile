@@ -34,6 +34,20 @@ fetchMock.mockIf(CREATE_DOOR_USER_URL, (req) => {
     })
 })
 
+global.console = {
+    log: console.log,
+    error: jest.fn((message) => {
+        try {
+            if (message.indexOf("An update to CardContainer inside a test was not wrapped in act(...).") === -1) {
+                console.error(message);
+            }
+        } catch (e) {}
+    }),
+    warn: console.warn,
+    info: console.info,
+    debug: console.debug,
+};
+
 jest.mock("react-native-reanimated", () => {
     const Reanimated = require("react-native-reanimated/mock");
     Reanimated.default.call = () => {};

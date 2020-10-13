@@ -7,9 +7,6 @@ export const getDoorUsers = () =>
         headers: {Authorization: `Bearer ${tokens.accessToken}`},
     })
         .then((r) => r.json())
-        .then((r) =>
-            r.map(
-                ({name, notes}: {name: string; notes: string}) =>
-                    ({name, description: notes} as User),
-            ),
+        .then((r: {name: string; notes: string}[]) =>
+            r.map(({name, notes}) => ({name, description: notes} as User)),
         );

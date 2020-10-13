@@ -7,9 +7,6 @@ export const getDoorDevices = () =>
         headers: {Authorization: `Bearer ${tokens.accessToken}`},
     })
         .then((r) => r.json())
-        .then((r) =>
-            r.map(
-                ({id, description}: {id: number; description: string}) =>
-                    ({id, description} as Device),
-            ),
+        .then((r: {id: number; description: string}[]) =>
+            r.map(({id, description}) => ({id, description} as Device)),
         );

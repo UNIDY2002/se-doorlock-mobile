@@ -46,7 +46,9 @@ test("routing", async () => {
 
     // Switch between tabs
     const UsersTab = root.findByProps({name: "Users"});
-    UsersTab.props.navigation.navigate("Devices");
-    UsersTab.props.navigation.navigate("Advanced");
     await sleep(800);
+    UsersTab.props.navigation.navigate("Devices");
+    await sleep(2000);
+    UsersTab.props.navigation.navigate("Advanced");
+    await sleep(2000);
 });

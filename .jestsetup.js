@@ -1,7 +1,7 @@
 import "react-native-gesture-handler/jestSetup";
 import mockAsyncStorage from "@react-native-community/async-storage/jest/async-storage-mock";
 
-import {LOGIN_URL} from "./src/constants/urls";
+import {GET_DOOR_DEVICES_URL, GET_DOOR_USERS_URL, LOGIN_URL} from "./src/constants/urls";
 
 require("jest-fetch-mock").enableMocks();
 
@@ -13,6 +13,20 @@ fetchMock.mockIf(LOGIN_URL, (req) => {
         headers: {"Content-Type": "application/json"},
     });
 });
+
+fetchMock.mockIf(GET_DOOR_USERS_URL, () => {
+    return Promise.resolve({
+        body: JSON.stringify([{name: "a", notes: "x"}, {name: "b", notes: "y"}]),
+        headers: {"Content-Type": "application/json"},
+    })
+})
+
+fetchMock.mockIf(GET_DOOR_DEVICES_URL, () => {
+    return Promise.resolve({
+        body: JSON.stringify([{id: 1, description: "p"}, {id: 2, description: "q"}]),
+        headers: {"Content-Type": "application/json"},
+    })
+})
 
 jest.mock("react-native-reanimated", () => {
     const Reanimated = require("react-native-reanimated/mock");

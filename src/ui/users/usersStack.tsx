@@ -18,7 +18,7 @@ const Stack = createStackNavigator<UsersStackParamList>();
 
 export type UsersNav = StackNavigationProp<UsersStackParamList>;
 
-export type UserListRouteProp = RouteProp<UsersStackParamList, "ModifyUser">;
+export type ModifyUserRouteProp = RouteProp<UsersStackParamList, "ModifyUser">;
 
 export const UsersStack = () => (
     <Stack.Navigator>
@@ -38,7 +38,7 @@ export const UsersStack = () => (
         <Stack.Screen
             name="ModifyUser"
             component={ModifyUserScreen}
-            options={({route}: {route: UserListRouteProp}) => ({
+            options={({route}: {route: ModifyUserRouteProp}) => ({
                 title: route.params === undefined ? "创建用户" : "修改用户信息",
             })}
         />

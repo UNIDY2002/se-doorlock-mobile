@@ -3,6 +3,6 @@ export const BASE_URL = "https://door-lock-system-flask-null.app.secoder.net";
 export const LOGIN_URL = `${BASE_URL}/cms/user/login`;
 
 export const GET_DOOR_USERS_URL = `${BASE_URL}/v1/doorUser?handleError=true`;
-export const CREATE_DOOR_USER_URL = `${BASE_URL}/doorUser`;
+export const CREATE_DOOR_USER_URL = `${BASE_URL}/v1/doorUser`;
 
 export const GET_DOOR_DEVICES_URL = `${BASE_URL}/v1/doorDevice?handleError=true`;

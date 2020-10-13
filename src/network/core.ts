@@ -17,3 +17,18 @@ export const login = (username: string, password: string) =>
             ({access_token}: {access_token: string}) =>
                 (tokens.accessToken = access_token),
         );
+
+// eslint-disable-next-line no-undef
+export const authedFetch = (input: RequestInfo, init?: RequestInit) =>
+    fetch(
+        input,
+        init === undefined
+            ? {headers: {Authorization: `Bearer ${tokens.accessToken}`}}
+            : {
+                  ...init,
+                  headers: {
+                      ...init.headers,
+                      Authorization: `Bearer ${tokens.accessToken}`,
+                  },
+              },
+    ).then((r) => r.json());

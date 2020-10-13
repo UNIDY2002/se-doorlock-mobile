@@ -7,7 +7,7 @@ import styles from "../../styles/login";
 import Icon from "react-native-vector-icons/FontAwesome";
 import {State} from "../../redux/store";
 import {Auth} from "../../redux/states/auth";
-import {login} from "../../network/login";
+import {login} from "../../network/core";
 import Snackbar from "react-native-snackbar";
 
 const LoginUI = ({

@@ -1,12 +1,10 @@
 import {GET_DOOR_DEVICES_URL} from "../constants/urls";
-import {tokens} from "./tokens";
-import {Device} from "../models/users";
+import {Device} from "../models/devices";
+import {authedFetch} from "./core";
 
 export const getDoorDevices = () =>
-    fetch(GET_DOOR_DEVICES_URL, {
-        headers: {Authorization: `Bearer ${tokens.accessToken}`},
-    })
-        .then((r) => r.json())
-        .then((r: {id: number; description: string}[]) =>
-            r.map(({id, description}) => ({id, description} as Device)),
-        );
+    authedFetch(
+        GET_DOOR_DEVICES_URL,
+    ).then((r: {id: number; description: string}[]) =>
+        r.map(({id, description}) => ({id, description} as Device)),
+    );

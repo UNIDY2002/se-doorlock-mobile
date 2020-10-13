@@ -31,6 +31,7 @@ export const UsersStack = () => (
                     <HeaderButton
                         name="plus"
                         onPress={() => navigation.navigate("ModifyUser")}
+                        testID="userAddTopRight"
                     />
                 ),
             })}

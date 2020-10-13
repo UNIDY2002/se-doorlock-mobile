@@ -1,18 +1,19 @@
 import "react-native";
 import React from "react";
 import {App} from "../src/App";
-import renderer, {act} from "react-test-renderer";
+import renderer from "react-test-renderer";
 import {Button} from "react-native";
 import {TextInput} from "react-native";
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 test("routing", async () => {
-    jest.setTimeout(15000);
+    // This test can be very time consuming. Considering to split it.
+    jest.setTimeout(60000);
 
     // Render the app
     const {root} = renderer.create(<App />);
-    await act(async () => {});
+    await sleep(1000);
 
     // Press register
     root.findAllByType(TextInput)[0].props.onChangeText("username");
@@ -42,7 +43,7 @@ test("routing", async () => {
     root.findByProps({testID: "passwordInput"}).props.onChangeText("123456");
     await sleep(800);
     root.findAllByType(Button)[0].props.onPress();
-    await sleep(800);
+    await sleep(1500);
 
     // Switch between tabs
     const UsersTab = root.findByProps({name: "Users"});
@@ -51,4 +52,22 @@ test("routing", async () => {
     await sleep(2000);
     UsersTab.props.navigation.navigate("Advanced");
     await sleep(2000);
+    UsersTab.props.navigation.navigate("Users");
+    await sleep(2000);
+
+    // Perform add user
+    root.findByProps({testID: "userAddTopRight"}).props.onPress();
+    await sleep(800);
+    root.findByProps({testID: "modifyUserDescription"}).props.onChangeText(
+        "description",
+    );
+    await sleep(500);
+    root.findByProps({testID: "modifyUserSubmit"}).props.onPress();
+    await sleep(800);
+    root.findByProps({testID: "modifyUserName"}).props.onChangeText("name");
+    await sleep(500);
+    root.findByProps({testID: "modifyUserSubmit"}).props.onPress();
+    await sleep(1200);
+    expect(root.findAllByProps({testID: "modifyUserSubmit"}).length).toEqual(0);
+    await sleep(500);
 });

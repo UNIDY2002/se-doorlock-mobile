@@ -1,7 +1,7 @@
 import "react-native-gesture-handler/jestSetup";
 import mockAsyncStorage from "@react-native-community/async-storage/jest/async-storage-mock";
 
-import {GET_DOOR_DEVICES_URL, GET_DOOR_USERS_URL, LOGIN_URL} from "./src/constants/urls";
+import {CREATE_DOOR_USER_URL, GET_DOOR_DEVICES_URL, GET_DOOR_USERS_URL, LOGIN_URL} from "./src/constants/urls";
 
 require("jest-fetch-mock").enableMocks();
 
@@ -28,6 +28,12 @@ fetchMock.mockIf(GET_DOOR_DEVICES_URL, () => {
     })
 })
 
+fetchMock.mockIf(CREATE_DOOR_USER_URL, (req) => {
+    return Promise.resolve({
+        body: JSON.stringify({error_code: JSON.parse(String(req.body)).name === "" ? -1 : 0, msg: ""})
+    })
+})
+
 jest.mock("react-native-reanimated", () => {
     const Reanimated = require("react-native-reanimated/mock");
     Reanimated.default.call = () => {};
@@ -35,6 +41,7 @@ jest.mock("react-native-reanimated", () => {
 });
 
 jest.mock("react-native-snackbar", () => ({
+    show: () => {},
     LENGTH_LONG: 0,
     LENGTH_SHORT: -1,
     LENGTH_INDEFINITE: -2,

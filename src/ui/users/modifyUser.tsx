@@ -63,6 +63,7 @@ export const ModifyUserScreen = ({
                                 }),
                             );
                 }}
+                testID="modifyUserSubmit"
             />
         </View>
     );

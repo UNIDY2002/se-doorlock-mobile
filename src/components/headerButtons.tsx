@@ -8,6 +8,7 @@ export const HeaderButton = ({
 }: {
     name: string;
     onPress: () => any;
+    testID: string;
 }) => (
     <TouchableOpacity
         style={{paddingHorizontal: 16, marginHorizontal: 4}}

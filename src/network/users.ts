@@ -28,3 +28,6 @@ export const updateDoorUser = ({id, name, description}: User) =>
         body: JSON.stringify({id, name, notes: description}),
         headers: {"Content-Type": "application/json"},
     });
+
+export const deleteDoorUser = (id: number) =>
+    authedFetch(`${GET_DOOR_USERS_URL}/${id}`, {method: "DELETE"});

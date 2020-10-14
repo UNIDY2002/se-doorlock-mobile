@@ -16,6 +16,11 @@ fetchMock.mockIf(/^.*$/, (req) => {
                 headers: {"Content-Type": "application/json"},
             });
         case GET_DOOR_USERS_URL:
+            if (req.method === "POST" && JSON.parse(String(req.body)).name.length) {
+                const {name, notes} = JSON.parse(String(req.body));
+                const id = users.length ? users[users.length - 1].id + 1 : 0;
+                users.push({id, name, notes});
+            }
             return Promise.resolve({
                 body: JSON.stringify(req.method === "GET"
                     ? users
@@ -30,13 +35,17 @@ fetchMock.mockIf(/^.*$/, (req) => {
     }
     if (req.url.startsWith(GET_DOOR_USERS_URL)) {
         const id = Number(req.url.substring(req.url.lastIndexOf('/') + 1));
+        const target = users.find((it) => it.id === id);
+        if (!target) return Promise.reject();
         if (req.method === "PUT") {
             const {name, notes} = JSON.parse(String(req.body));
-            users[id].name = name;
-            users[id].notes = notes;
+            target.name = name;
+            target.notes = notes;
+        } else if (req.method === "DELETE") {
+            users.splice(users.indexOf(target), 1);
         }
         return Promise.resolve({
-            body: JSON.stringify(req.method === "PUT" ? {error_code: 0, msg: ""} : users[id]),
+            body: JSON.stringify(req.method === "GET" ? target : {error_code: 0, msg: ""}),
             headers: {"Content-Type": "application/json"},
         })
     }

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {
     FC,
     PropsWithChildren,
@@ -36,8 +37,8 @@ export function simpleRefreshList<T>(
                 )
                 .then(() => setRefreshing(false));
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        useEffect(refresh, []);
+        // @ts-ignore
+        useEffect(refresh, [props.route?.params?.refreshTimestamp]);
 
         return (
             <FlatList

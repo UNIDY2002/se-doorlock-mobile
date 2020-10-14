@@ -4,6 +4,7 @@ import {App} from "../src/App";
 import renderer from "react-test-renderer";
 import {Button} from "react-native";
 import {TextInput} from "react-native";
+import {RectButton} from "react-native-gesture-handler";
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -56,4 +57,10 @@ test("users", async () => {
         "z",
     );
     await sleep(500);
+
+    // Delete a user
+    expect(root.findAllByType(RectButton).length).toEqual(3);
+    await sleep(200);
+    root.findAllByType(RectButton)[0].props.onPress();
+    await sleep(200);
 });

@@ -56,7 +56,9 @@ export const ModifyUserScreen = ({
                         : updateDoorUser({...route.params, name, description})
                     )
                         .then(({msg}: {msg: string}) => {
-                            navigation.pop(); // TODO: auto refresh upon returning
+                            navigation.navigate("UserList", {
+                                refreshTimestamp: new Date().valueOf(),
+                            });
                             Snackbar.show({
                                 text: msg,
                                 duration: Snackbar.LENGTH_SHORT,

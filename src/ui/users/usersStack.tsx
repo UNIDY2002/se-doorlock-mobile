@@ -10,7 +10,7 @@ import {RouteProp} from "@react-navigation/native";
 import {User} from "../../models/users";
 
 export type UsersStackParamList = {
-    UserList: undefined;
+    UserList: {refreshTimestamp: number} | undefined;
     ModifyUser: User | undefined;
 };
 

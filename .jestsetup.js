@@ -1,33 +1,6 @@
 import "react-native-gesture-handler/jestSetup";
 import mockAsyncStorage from "@react-native-community/async-storage/jest/async-storage-mock";
-
-import {GET_DOOR_DEVICES_URL, GET_DOOR_USERS_URL, LOGIN_URL} from "./src/constants/urls";
-import { enableFetchMocks } from 'jest-fetch-mock'
-enableFetchMocks()
-
-fetchMock.mockIf(/^.*$/, (req) => {
-    switch (req.url) {
-        case LOGIN_URL:
-            const {username, password} = JSON.parse(String(req.body));
-            return Promise.resolve({
-                status: (username === "super" && password === "123456") ? 200 : 400,
-                body: JSON.stringify({access_token: "access_token"}),
-                headers: {"Content-Type": "application/json"},
-            });
-        case GET_DOOR_USERS_URL:
-            return Promise.resolve({
-                body: JSON.stringify(req.method === "GET"
-                    ? [{name: "a", notes: "x"}, {name: "b", notes: "y"}]
-                    : {error_code: JSON.parse(String(req.body)).name === "" ? -1 : 0, msg: ""}),
-                headers: {"Content-Type": "application/json"},
-            });
-        case GET_DOOR_DEVICES_URL:
-            return Promise.resolve({
-                body: JSON.stringify([{id: 1, description: "p"}, {id: 2, description: "q"}]),
-                headers: {"Content-Type": "application/json"},
-            })
-    }
-});
+require("./.mockbackend.js");
 
 global.console = {
     log: console.log,

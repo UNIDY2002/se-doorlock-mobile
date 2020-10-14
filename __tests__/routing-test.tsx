@@ -8,8 +8,7 @@ import {TextInput} from "react-native";
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 test("routing", async () => {
-    // This test can be very time consuming. Considering to split it.
-    jest.setTimeout(60000);
+    jest.setTimeout(30000);
 
     // Render the app
     const {root} = renderer.create(<App />);
@@ -52,22 +51,4 @@ test("routing", async () => {
     await sleep(2000);
     UsersTab.props.navigation.navigate("Advanced");
     await sleep(2000);
-    UsersTab.props.navigation.navigate("Users");
-    await sleep(2000);
-
-    // Perform add user
-    root.findByProps({testID: "userAddTopRight"}).props.onPress();
-    await sleep(800);
-    root.findByProps({testID: "modifyUserDescription"}).props.onChangeText(
-        "description",
-    );
-    await sleep(500);
-    root.findByProps({testID: "modifyUserSubmit"}).props.onPress();
-    await sleep(800);
-    root.findByProps({testID: "modifyUserName"}).props.onChangeText("name");
-    await sleep(500);
-    root.findByProps({testID: "modifyUserSubmit"}).props.onPress();
-    await sleep(1200);
-    expect(root.findAllByProps({testID: "modifyUserSubmit"}).length).toEqual(0);
-    await sleep(500);
 });

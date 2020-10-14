@@ -10,7 +10,8 @@ export const UserListScreen = simpleRefreshList(
     (item, _, {navigation}: {navigation: UsersNav}) => (
         <TouchableOpacity
             style={Material.card}
-            onPress={() => navigation.navigate("ModifyUser", item)}>
+            onPress={() => navigation.navigate("ModifyUser", item)}
+            testID="userItem">
             <Text style={{fontSize: 20, fontWeight: "bold"}}>{item.name}</Text>
             <Text style={{lineHeight: 24}}>{item.description}</Text>
         </TouchableOpacity>

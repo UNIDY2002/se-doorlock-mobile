@@ -37,25 +37,13 @@ export const ModifyUserScreen = ({
                     });
                     route.params === undefined &&
                         createDoorUser({name, description})
-                            .then(
-                                ({
-                                    error_code,
-                                    msg,
-                                }: {
-                                    error_code: number;
-                                    msg: string;
-                                }) => {
-                                    if (error_code === 0) {
-                                        navigation.pop(); // TODO: auto refresh upon returning
-                                        Snackbar.show({
-                                            text: msg,
-                                            duration: Snackbar.LENGTH_SHORT,
-                                        });
-                                    } else {
-                                        throw new Error(msg);
-                                    }
-                                },
-                            )
+                            .then(({msg}: {msg: string}) => {
+                                navigation.pop(); // TODO: auto refresh upon returning
+                                Snackbar.show({
+                                    text: msg,
+                                    duration: Snackbar.LENGTH_SHORT,
+                                });
+                            })
                             .catch((e) =>
                                 Snackbar.show({
                                     text: e,

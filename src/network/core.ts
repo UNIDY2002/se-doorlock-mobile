@@ -31,4 +31,11 @@ export const authedFetch = (input: RequestInfo, init?: RequestInit) =>
                       Authorization: `Bearer ${tokens.accessToken}`,
                   },
               },
-    ).then((r) => r.json());
+    )
+        .then((r) => r.json())
+        .then((r) => {
+            if (typeof r.error_code === "number" && r.error_code !== 0) {
+                throw r.msg;
+            }
+            return r;
+        });

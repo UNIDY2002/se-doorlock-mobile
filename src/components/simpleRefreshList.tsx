@@ -25,9 +25,12 @@ export function simpleRefreshList<T>(
             setRefreshing(true);
             dataSource(props)
                 .then(setData)
-                .catch(() =>
+                .catch((e) =>
                     Snackbar.show({
-                        text: "网络异常，请重试",
+                        text:
+                            typeof e === "string" && e.length > 0
+                                ? e
+                                : "网络异常，请重试",
                         duration: Snackbar.LENGTH_SHORT,
                     }),
                 )

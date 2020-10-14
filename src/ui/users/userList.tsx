@@ -1,6 +1,6 @@
 import React from "react";
 import {UsersNav} from "./usersStack";
-import {Alert, Text, TouchableOpacity} from "react-native";
+import {Text, TouchableOpacity} from "react-native";
 import {Material} from "../../styles/material";
 import {deleteDoorUser, getDoorUsers} from "../../network/users";
 import {simpleRefreshList} from "../../components/simpleRefreshList";
@@ -8,6 +8,7 @@ import Swipeable from "react-native-gesture-handler/Swipeable";
 import {RectButton} from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Snackbar from "react-native-snackbar";
+import {simpleAlert} from "../../utils/alerts";
 
 export const UserListScreen = simpleRefreshList(
     getDoorUsers,
@@ -21,38 +22,29 @@ export const UserListScreen = simpleRefreshList(
                         justifyContent: "center",
                     }}
                     onPress={() => {
-                        Alert.alert(
+                        simpleAlert(
                             "您确定要删除吗？",
                             "该操作无法撤销",
-                            [
-                                {text: "取消"},
-                                {
-                                    text: "确定",
-                                    onPress: () => {
+                            () => {
+                                Snackbar.show({
+                                    text: "处理中……",
+                                    duration: Snackbar.LENGTH_SHORT,
+                                });
+                                deleteDoorUser(item.id)
+                                    .then(({msg}: {msg: string}) =>
                                         Snackbar.show({
-                                            text: "处理中……",
+                                            text: msg,
                                             duration: Snackbar.LENGTH_SHORT,
-                                        });
-                                        deleteDoorUser(item.id)
-                                            .then(({msg}: {msg: string}) =>
-                                                Snackbar.show({
-                                                    text: msg,
-                                                    duration:
-                                                        Snackbar.LENGTH_SHORT,
-                                                }),
-                                            )
-                                            .catch((e) =>
-                                                Snackbar.show({
-                                                    text: e,
-                                                    duration:
-                                                        Snackbar.LENGTH_SHORT,
-                                                }),
-                                            );
-                                        refresh();
-                                    },
-                                },
-                            ],
-                            {cancelable: true},
+                                        }),
+                                    )
+                                    .catch((e) =>
+                                        Snackbar.show({
+                                            text: e,
+                                            duration: Snackbar.LENGTH_SHORT,
+                                        }),
+                                    );
+                                refresh();
+                            },
                         );
                     }}>
                     <Icon name="trash" size={40} color="tomato" />

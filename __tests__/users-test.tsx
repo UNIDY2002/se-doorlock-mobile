@@ -61,6 +61,10 @@ test("users", async () => {
     // Delete a user
     expect(root.findAllByType(RectButton).length).toEqual(3);
     await sleep(200);
-    root.findAllByType(RectButton)[0].props.onPress();
+    const tempProps = root.findAllByType(RectButton)[0].props;
+    tempProps.onPress();
+    tempProps.onPress(); // Try what happens when user accidentally double-clicks
+    await sleep(200);
+    expect(root.findAllByType(RectButton).length).toEqual(2);
     await sleep(200);
 });

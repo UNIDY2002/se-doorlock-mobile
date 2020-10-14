@@ -1,5 +1,6 @@
 import "react-native-gesture-handler/jestSetup";
 import mockAsyncStorage from "@react-native-community/async-storage/jest/async-storage-mock";
+
 require("./.mockbackend.js");
 
 global.console = {
@@ -15,6 +16,12 @@ global.console = {
     info: console.info,
     debug: console.debug,
 };
+
+jest.mock("src/utils/alerts", () => ({
+    simpleAlert: (title, message, onConfirm) => {
+        onConfirm();
+    }
+}))
 
 jest.mock("react-native-reanimated", () => {
     const Reanimated = require("react-native-reanimated/mock");

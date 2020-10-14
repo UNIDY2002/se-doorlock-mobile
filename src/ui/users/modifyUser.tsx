@@ -1,7 +1,7 @@
 import {Button, TextInput, View} from "react-native";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {ModifyUserRouteProp, UsersNav} from "./usersStack";
-import {createDoorUser} from "../../network/users";
+import {createDoorUser, getDoorUser, updateDoorUser} from "../../network/users";
 import Snackbar from "react-native-snackbar";
 
 export const ModifyUserScreen = ({
@@ -11,8 +11,24 @@ export const ModifyUserScreen = ({
     navigation: UsersNav;
     route: ModifyUserRouteProp;
 }) => {
-    const [name, setName] = useState("");
-    const [description, setDescription] = useState("");
+    const [name, setName] = useState(route.params?.name ?? "");
+    const [description, setDescription] = useState(
+        route.params?.description ?? "",
+    );
+
+    useEffect(() => {
+        if (route.params) {
+            getDoorUser(route.params.id).then((r) => {
+                if (route.params?.name === name) {
+                    setName(r.name);
+                }
+                if (route.params?.description === description) {
+                    setDescription(r.description);
+                }
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <View style={{alignItems: "center"}}>
@@ -35,21 +51,23 @@ export const ModifyUserScreen = ({
                         text: "处理中……",
                         duration: Snackbar.LENGTH_SHORT,
                     });
-                    route.params === undefined &&
-                        createDoorUser({name, description})
-                            .then(({msg}: {msg: string}) => {
-                                navigation.pop(); // TODO: auto refresh upon returning
-                                Snackbar.show({
-                                    text: msg,
-                                    duration: Snackbar.LENGTH_SHORT,
-                                });
-                            })
-                            .catch((e) =>
-                                Snackbar.show({
-                                    text: e,
-                                    duration: Snackbar.LENGTH_SHORT,
-                                }),
-                            );
+                    (route.params === undefined
+                        ? createDoorUser(name, description)
+                        : updateDoorUser({...route.params, name, description})
+                    )
+                        .then(({msg}: {msg: string}) => {
+                            navigation.pop(); // TODO: auto refresh upon returning
+                            Snackbar.show({
+                                text: msg,
+                                duration: Snackbar.LENGTH_SHORT,
+                            });
+                        })
+                        .catch((e) =>
+                            Snackbar.show({
+                                text: e,
+                                duration: Snackbar.LENGTH_SHORT,
+                            }),
+                        );
                 }}
                 testID="modifyUserSubmit"
             />

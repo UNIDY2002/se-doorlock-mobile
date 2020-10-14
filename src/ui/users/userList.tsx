@@ -1,40 +1,65 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {UsersNav} from "./usersStack";
-import {FlatList, Text, TouchableOpacity} from "react-native";
+import {Text, TouchableOpacity} from "react-native";
 import {Material} from "../../styles/material";
-import {User} from "../../models/users";
-import {getDoorUsers} from "../../network/users";
+import {deleteDoorUser, getDoorUsers} from "../../network/users";
+import {simpleRefreshList} from "../../components/simpleRefreshList";
+import Swipeable from "react-native-gesture-handler/Swipeable";
+import {RectButton} from "react-native-gesture-handler";
+import Icon from "react-native-vector-icons/FontAwesome";
 import Snackbar from "react-native-snackbar";
+import {simpleAlert} from "../../utils/alerts";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const UserListScreen = ({navigation}: {navigation: UsersNav}) => {
-    const [users, setUsers] = useState<User[]>([]);
-
-    const refresh = () => {
-        getDoorUsers()
-            .then(setUsers)
-            .catch(() =>
-                Snackbar.show({
-                    text: "网络异常，请重试",
-                    duration: Snackbar.LENGTH_SHORT,
-                }),
-            );
-    };
-
-    useEffect(refresh, []);
-
-    return (
-        <FlatList
-            data={users}
-            renderItem={({item}) => (
-                <TouchableOpacity style={Material.card}>
-                    <Text style={{fontSize: 20, fontWeight: "bold"}}>
-                        {item.name}
-                    </Text>
-                    <Text style={{lineHeight: 24}}>{item.description}</Text>
-                </TouchableOpacity>
-            )}
-            keyExtractor={(item) => item.name}
-        />
-    );
-};
+export const UserListScreen = simpleRefreshList(
+    getDoorUsers,
+    (item, refresh, {navigation}: {navigation: UsersNav}) => (
+        <Swipeable
+            renderRightActions={() => (
+                <RectButton
+                    style={{
+                        width: 80,
+                        alignItems: "center",
+                        justifyContent: "center",
+                    }}
+                    onPress={() => {
+                        simpleAlert(
+                            "您确定要删除吗？",
+                            "该操作无法撤销",
+                            () => {
+                                Snackbar.show({
+                                    text: "处理中……",
+                                    duration: Snackbar.LENGTH_SHORT,
+                                });
+                                deleteDoorUser(item.id)
+                                    .then(({msg}: {msg: string}) =>
+                                        Snackbar.show({
+                                            text: msg,
+                                            duration: Snackbar.LENGTH_SHORT,
+                                        }),
+                                    )
+                                    .catch((e) =>
+                                        Snackbar.show({
+                                            text: e,
+                                            duration: Snackbar.LENGTH_SHORT,
+                                        }),
+                                    );
+                                refresh();
+                            },
+                        );
+                    }}>
+                    <Icon name="trash" size={40} color="tomato" />
+                </RectButton>
+            )}>
+            <TouchableOpacity
+                style={Material.card}
+                onPress={() => navigation.navigate("ModifyUser", item)}
+                testID="userItem">
+                <Text style={{fontSize: 20, fontWeight: "bold"}}>
+                    {item.name}
+                </Text>
+                <Text style={{lineHeight: 24}}>{item.description}</Text>
+            </TouchableOpacity>
+        </Swipeable>
+    ),
+    (item) => item.name,
+);

@@ -1,18 +1,18 @@
 import "react-native";
 import React from "react";
 import {App} from "../src/App";
-import renderer, {act} from "react-test-renderer";
+import renderer from "react-test-renderer";
 import {Button} from "react-native";
 import {TextInput} from "react-native";
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 test("routing", async () => {
-    jest.setTimeout(15000);
+    jest.setTimeout(30000);
 
     // Render the app
     const {root} = renderer.create(<App />);
-    await act(async () => {});
+    await sleep(1000);
 
     // Press register
     root.findAllByType(TextInput)[0].props.onChangeText("username");
@@ -42,11 +42,13 @@ test("routing", async () => {
     root.findByProps({testID: "passwordInput"}).props.onChangeText("123456");
     await sleep(800);
     root.findAllByType(Button)[0].props.onPress();
-    await sleep(800);
+    await sleep(1500);
 
     // Switch between tabs
     const UsersTab = root.findByProps({name: "Users"});
-    UsersTab.props.navigation.navigate("Devices");
-    UsersTab.props.navigation.navigate("Advanced");
     await sleep(800);
+    UsersTab.props.navigation.navigate("Devices");
+    await sleep(2000);
+    UsersTab.props.navigation.navigate("Advanced");
+    await sleep(2000);
 });

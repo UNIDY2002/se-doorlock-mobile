@@ -1,8 +1,7 @@
 import React from "react";
-import {Text} from "react-native";
 import {AdvancedNav} from "./advancedStack";
+import {Button} from "react-native";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const HomeScreen = ({navigation}: {navigation: AdvancedNav}) => (
-    <Text>Advanced</Text>
+    <Button title="相机" onPress={() => navigation.navigate("CameraTemp")} />
 );

@@ -1,8 +1,20 @@
-import {Button, TextInput, View} from "react-native";
+import {Button, FlatList, Image, Text, TextInput, View} from "react-native";
 import React, {useEffect, useState} from "react";
 import {ModifyUserRouteProp, UsersNav} from "./usersStack";
-import {createDoorUser, getDoorUser, updateDoorUser} from "../../network/users";
+import {
+    addDoorUserPhotos,
+    createDoorUser,
+    getDoorUser,
+    getDoorUserPhotos,
+    updateDoorUser,
+} from "../../network/users";
 import Snackbar from "react-native-snackbar";
+import {Camera} from "../../components/camera";
+
+interface AuthConfig {
+    uri: string;
+    headers: {Authorization: string};
+}
 
 export const ModifyUserScreen = ({
     navigation,
@@ -15,6 +27,9 @@ export const ModifyUserScreen = ({
     const [description, setDescription] = useState(
         route.params?.description ?? "",
     );
+    const [cameraOn, setCameraOn] = useState(false);
+    const [photos, setPhotos] = useState<AuthConfig[]>([]);
+    const [photoStatus, setPhotoStatus] = useState<string>();
 
     useEffect(() => {
         if (route.params) {
@@ -26,11 +41,30 @@ export const ModifyUserScreen = ({
                     setDescription(r.description);
                 }
             });
+            getDoorUserPhotos(route.params.id).then(setPhotos);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return (
+    return cameraOn ? (
+        <Camera
+            onPress={(uri) => {
+                setPhotoStatus("上传中……");
+                setCameraOn(false);
+                route.params &&
+                    addDoorUserPhotos(route.params.id, uri)
+                        .then(() =>
+                            route.params
+                                ? getDoorUserPhotos(route.params.id)
+                                : Promise.resolve<AuthConfig[]>([]),
+                        )
+                        .then((r) => {
+                            setPhotos(r);
+                            setPhotoStatus("上传成功");
+                        });
+            }}
+        />
+    ) : (
         <View style={{alignItems: "center"}}>
             <TextInput
                 testID="modifyUserName"
@@ -43,6 +77,22 @@ export const ModifyUserScreen = ({
                 placeholder="备注信息"
                 value={description}
                 onChangeText={setDescription}
+            />
+            {route.params && (
+                <Button
+                    title="拍照"
+                    onPress={() => setCameraOn(true)}
+                    testID="modifyUserCameraButton"
+                />
+            )}
+            {photoStatus && <Text>{photoStatus}</Text>}
+            <FlatList
+                data={photos}
+                renderItem={({item}) => (
+                    <Image source={item} style={{height: 400, width: 400}} />
+                )}
+                keyExtractor={({uri}) => uri}
+                style={{height: "50%"}}
             />
             <Button
                 title="保存"

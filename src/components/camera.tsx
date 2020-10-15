@@ -1,9 +1,8 @@
 import {RNCamera} from "react-native-camera";
 import {Text, TouchableOpacity, View} from "react-native";
 import React from "react";
-import {simpleAlert} from "../utils/alerts";
 
-export const Camera = () => (
+export const Camera = ({onPress}: {onPress?: (uri: string) => void}) => (
     <View style={{backgroundColor: "black", flex: 1}}>
         <RNCamera
             style={{
@@ -33,9 +32,7 @@ export const Camera = () => (
                                         quality: 0.9,
                                         base64: true,
                                     })
-                                    .then(({uri}) => {
-                                        simpleAlert("uri", uri, () => {});
-                                    });
+                                    .then(({uri}) => onPress && onPress(uri));
                             }}
                             style={{
                                 flex: 0,

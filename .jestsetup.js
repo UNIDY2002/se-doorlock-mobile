@@ -17,6 +17,14 @@ global.console = {
     debug: console.debug,
 };
 
+function FormDataMock() {
+    this.append = jest.fn();
+}
+
+global.FormData = FormDataMock
+
+jest.mock("src/components/camera");
+
 jest.mock("src/utils/alerts", () => ({
     simpleAlert: (title, message, onConfirm) => {
         onConfirm();

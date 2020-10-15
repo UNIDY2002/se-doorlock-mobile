@@ -79,7 +79,11 @@ export const ModifyUserScreen = ({
                 onChangeText={setDescription}
             />
             {route.params && (
-                <Button title="拍照" onPress={() => setCameraOn(true)} />
+                <Button
+                    title="拍照"
+                    onPress={() => setCameraOn(true)}
+                    testID="modifyUserCameraButton"
+                />
             )}
             {photoStatus && <Text>{photoStatus}</Text>}
             <FlatList

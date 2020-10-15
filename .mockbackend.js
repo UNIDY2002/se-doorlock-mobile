@@ -1,4 +1,4 @@
-import {GET_DOOR_DEVICES_URL, GET_DOOR_USERS_URL, LOGIN_URL} from "./src/constants/urls";
+import {GET_DOOR_DEVICES_URL, GET_DOOR_USERS_URL, LOGIN_URL, USER_PHOTO_URL} from "./src/constants/urls";
 import {enableFetchMocks} from 'jest-fetch-mock'
 
 enableFetchMocks()
@@ -33,7 +33,12 @@ fetchMock.mockIf(/^.*$/, (req) => {
                 headers: {"Content-Type": "application/json"},
             })
     }
-    if (req.url.startsWith(GET_DOOR_USERS_URL)) {
+    if (req.url.startsWith(USER_PHOTO_URL)) {
+        return Promise.resolve({
+            body: JSON.stringify(["dummy"]),
+            headers: {"Content-Type": "application/json"},
+        });
+    } else if (req.url.startsWith(GET_DOOR_USERS_URL)) {
         const id = Number(req.url.substring(req.url.lastIndexOf('/') + 1));
         const target = users.find((it) => it.id === id);
         if (!target) return Promise.reject();

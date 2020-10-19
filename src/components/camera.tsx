@@ -8,6 +8,7 @@ export const Camera = ({
 }: {
     onPress?: (uri: string) => void;
     onBarCode?: (text: string) => void;
+    testID?: string;
 }) => (
     <View style={{backgroundColor: "black", flex: 1}}>
         <RNCamera

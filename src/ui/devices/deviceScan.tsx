@@ -18,6 +18,7 @@ export const DeviceScanScreen = ({navigation}: {navigation: DevicesNav}) => {
                     return true;
                 });
             }}
+            testID="scanQrCamera"
         />
     );
 };

@@ -2,9 +2,19 @@ import {RNCamera} from "react-native-camera";
 import {Text, TouchableOpacity, View} from "react-native";
 import React from "react";
 
-export const Camera = ({onPress}: {onPress?: (uri: string) => void}) => (
+export const Camera = ({
+    onPress,
+    onBarCode,
+}: {
+    onPress?: (uri: string) => void;
+    onBarCode?: (text: string) => void;
+    testID?: string;
+}) => (
     <View style={{backgroundColor: "black", flex: 1}}>
         <RNCamera
+            onBarCodeRead={(
+                {type, data}, // @ts-ignore, I doubt whether there is something wrong with its bundled type definition file
+            ) => type === "QR_CODE" && onBarCode && onBarCode(data)}
             style={{
                 flex: 1,
                 justifyContent: "flex-end",
@@ -25,26 +35,30 @@ export const Camera = ({onPress}: {onPress?: (uri: string) => void}) => (
                             flexDirection: "row",
                             justifyContent: "center",
                         }}>
-                        <TouchableOpacity
-                            onPress={() => {
-                                camera
-                                    .takePictureAsync({
-                                        quality: 0.9,
-                                        base64: true,
-                                    })
-                                    .then(({uri}) => onPress && onPress(uri));
-                            }}
-                            style={{
-                                flex: 0,
-                                backgroundColor: "#fff",
-                                borderRadius: 5,
-                                padding: 15,
-                                paddingHorizontal: 20,
-                                alignSelf: "center",
-                                margin: 20,
-                            }}>
-                            <Text style={{fontSize: 14}}>拍照</Text>
-                        </TouchableOpacity>
+                        {onBarCode === undefined && (
+                            <TouchableOpacity
+                                onPress={() => {
+                                    camera
+                                        .takePictureAsync({
+                                            quality: 0.9,
+                                            base64: true,
+                                        })
+                                        .then(
+                                            ({uri}) => onPress && onPress(uri),
+                                        );
+                                }}
+                                style={{
+                                    flex: 0,
+                                    backgroundColor: "#fff",
+                                    borderRadius: 5,
+                                    padding: 15,
+                                    paddingHorizontal: 20,
+                                    alignSelf: "center",
+                                    margin: 20,
+                                }}>
+                                <Text style={{fontSize: 14}}>拍照</Text>
+                            </TouchableOpacity>
+                        )}
                     </View>
                 ) : (
                     <View

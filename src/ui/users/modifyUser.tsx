@@ -10,11 +10,7 @@ import {
 } from "../../network/users";
 import Snackbar from "react-native-snackbar";
 import {Camera} from "../../components/camera";
-
-interface AuthConfig {
-    uri: string;
-    headers: {Authorization: string};
-}
+import {AuthConfig} from "../../models/users";
 
 export const ModifyUserScreen = ({
     navigation,
@@ -33,15 +29,15 @@ export const ModifyUserScreen = ({
 
     useEffect(() => {
         if (route.params) {
-            getDoorUser(route.params.id).then((r) => {
+            getDoorUser(route.params.id).then(([user, images]) => {
                 if (route.params?.name === name) {
-                    setName(r.name);
+                    setName(user.name);
                 }
                 if (route.params?.description === description) {
-                    setDescription(r.description);
+                    setDescription(user.description);
                 }
+                setPhotos(images);
             });
-            getDoorUserPhotos(route.params.id).then(setPhotos);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

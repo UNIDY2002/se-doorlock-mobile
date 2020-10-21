@@ -3,7 +3,7 @@ import {
     GET_DOOR_USERS_URL,
     USER_PHOTO_URL,
 } from "../constants/urls";
-import {User} from "../models/users";
+import {AuthConfig, Gender, User} from "../models/users";
 import {authedFetch} from "./core";
 import {tokens} from "./tokens";
 
@@ -14,10 +14,27 @@ export const getDoorUsers = () =>
         r.map(({id, name, notes}) => ({id, name, description: notes} as User)),
     );
 
-export const getDoorUser = (uid: number) =>
+export const getDoorUser = (uid: number): Promise<[User, AuthConfig[]]> =>
     authedFetch(`${GET_DOOR_USERS_URL}/${uid}`).then(
-        ({id, name, notes}: {id: number; name: string; notes: string}) =>
-            ({id, name, description: notes} as User),
+        ({
+            id,
+            name,
+            notes,
+            gender,
+            images,
+        }: {
+            id: number;
+            name: string;
+            notes: string;
+            gender: Gender;
+            images: {src: string}[];
+        }) => [
+            {id, name, description: notes, gender},
+            images.map(({src}) => ({
+                uri: `${ASSETS_URL}/${src}`,
+                headers: {Authorization: `Bearer ${tokens.accessToken}`},
+            })),
+        ],
     );
 
 export const createDoorUser = (name: string, description: string) =>

@@ -10,7 +10,7 @@ import {
 } from "../../network/users";
 import Snackbar from "react-native-snackbar";
 import {Camera} from "../../components/camera";
-import {AuthConfig} from "../../models/users";
+import {AuthConfig, Gender} from "../../models/users";
 
 export const ModifyUserScreen = ({
     navigation,
@@ -20,6 +20,9 @@ export const ModifyUserScreen = ({
     route: ModifyUserRouteProp;
 }) => {
     const [name, setName] = useState(route.params?.name ?? "");
+    const [gender, setGender] = useState<Gender>(
+        route.params?.gender ?? "未知",
+    );
     const [description, setDescription] = useState(
         route.params?.description ?? "",
     );
@@ -32,6 +35,9 @@ export const ModifyUserScreen = ({
             getDoorUser(route.params.id).then(([user, images]) => {
                 if (route.params?.name === name) {
                     setName(user.name);
+                }
+                if (route.params?.gender === gender) {
+                    setGender(user.gender);
                 }
                 if (route.params?.description === description) {
                     setDescription(user.description);
@@ -69,6 +75,12 @@ export const ModifyUserScreen = ({
                 onChangeText={setName}
             />
             <TextInput
+                testID="modifyUserGender"
+                placeholder="性别"
+                value={gender}
+                onChangeText={setGender}
+            />
+            <TextInput
                 testID="modifyUserDescription"
                 placeholder="备注信息"
                 value={description}
@@ -99,7 +111,10 @@ export const ModifyUserScreen = ({
                     });
                     (route.params === undefined
                         ? createDoorUser(name, description)
-                        : updateDoorUser({...route.params, name, description})
+                        : updateDoorUser(
+                              {...route.params, name, description, gender},
+                              photos.map(({src}) => src),
+                          )
                     )
                         .then(({msg}: {msg: string}) => {
                             navigation.navigate("UserList", {
@@ -110,9 +125,9 @@ export const ModifyUserScreen = ({
                                 duration: Snackbar.LENGTH_SHORT,
                             });
                         })
-                        .catch((e) =>
+                        .catch(() =>
                             Snackbar.show({
-                                text: e,
+                                text: "请求失败，请重试",
                                 duration: Snackbar.LENGTH_SHORT,
                             }),
                         );

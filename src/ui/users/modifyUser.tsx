@@ -1,4 +1,12 @@
-import {Button, FlatList, Image, Text, TextInput, View} from "react-native";
+import {
+    Button,
+    FlatList,
+    Image,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
+} from "react-native";
 import React, {useEffect, useState} from "react";
 import {ModifyUserRouteProp, UsersNav} from "./usersStack";
 import {
@@ -11,6 +19,24 @@ import {
 import Snackbar from "react-native-snackbar";
 import {Camera} from "../../components/camera";
 import {AuthConfig, Gender} from "../../models/users";
+
+function SelectorItem<T>({
+    item,
+    value,
+    setValue,
+}: {
+    item: T;
+    value: T;
+    setValue: (newValue: T) => void;
+}) {
+    return (
+        <TouchableOpacity onPress={() => setValue(item)} style={{padding: 5}}>
+            <Text style={{color: item === value ? "tomato" : "black"}}>
+                {item}
+            </Text>
+        </TouchableOpacity>
+    );
+}
 
 export const ModifyUserScreen = ({
     navigation,
@@ -74,12 +100,11 @@ export const ModifyUserScreen = ({
                 value={name}
                 onChangeText={setName}
             />
-            <TextInput
-                testID="modifyUserGender"
-                placeholder="性别"
-                value={gender}
-                onChangeText={setGender}
-            />
+            <View style={{flexDirection: "row"}}>
+                <SelectorItem item="男" value={gender} setValue={setGender} />
+                <SelectorItem item="女" value={gender} setValue={setGender} />
+                <SelectorItem item="未知" value={gender} setValue={setGender} />
+            </View>
             <TextInput
                 testID="modifyUserDescription"
                 placeholder="备注信息"

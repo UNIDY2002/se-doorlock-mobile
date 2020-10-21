@@ -3,7 +3,10 @@ import {enableFetchMocks} from 'jest-fetch-mock'
 
 enableFetchMocks()
 
-const users = [{id: 0, name: "a", notes: "x"}, {id: 1, name: "b", notes: "y"}];
+const users = [
+    {id: 0, name: "a", notes: "x", gender: "男", images: [{src: ""}]},
+    {id: 1, name: "b", notes: "y", gender: "女", images: [{src: ""}]},
+];
 const devices = [{id: 1, description: "p"}, {id: 2, description: "q"}];
 
 fetchMock.mockIf(/^.*$/, (req) => {

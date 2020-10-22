@@ -27,7 +27,10 @@ function SelectorItem<T>({
     setValue: (newValue: T) => void;
 }) {
     return (
-        <TouchableOpacity onPress={() => setValue(item)} style={{padding: 5}}>
+        <TouchableOpacity
+            onPress={() => setValue(item)}
+            style={{padding: 5}}
+            testID={`selectItem${item}`}>
             <Text style={{color: item === value ? "tomato" : "black"}}>
                 {item}
             </Text>

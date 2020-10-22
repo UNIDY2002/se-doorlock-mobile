@@ -1,4 +1,4 @@
-import {LOGIN_URL} from "../constants/urls";
+import {LOGIN_URL, POST_FILE_URL} from "../constants/urls";
 import {tokens} from "./tokens";
 
 export const login = (username: string, password: string) =>
@@ -39,3 +39,19 @@ export const authedFetch = (input: RequestInfo, init?: RequestInit) =>
             }
             return r;
         });
+
+export const postFile = (type: string, uri: string, name: string) => {
+    const body = new FormData();
+    body.append("file", {type, uri, name});
+    return authedFetch(POST_FILE_URL, {
+        method: "POST",
+        body,
+        headers: {"Content-Type": "multipart/form-data"},
+    }).then((r: {path: string; url: string}[]) =>
+        r.map(({path, url}) => ({
+            uri: url,
+            src: path,
+            headers: {Authorization: `Bearer ${tokens.accessToken}`},
+        })),
+    );
+};

@@ -9,16 +9,11 @@ import {
 } from "react-native";
 import React, {useEffect, useState} from "react";
 import {ModifyUserRouteProp, UsersNav} from "./usersStack";
-import {
-    addDoorUserPhotos,
-    createDoorUser,
-    getDoorUser,
-    getDoorUserPhotos,
-    updateDoorUser,
-} from "../../network/users";
+import {createDoorUser, getDoorUser, updateDoorUser} from "../../network/users";
 import Snackbar from "react-native-snackbar";
 import {Camera} from "../../components/camera";
 import {AuthConfig, Gender} from "../../models/users";
+import {postFile} from "../../network/core";
 
 function SelectorItem<T>({
     item,
@@ -54,7 +49,6 @@ export const ModifyUserScreen = ({
     );
     const [cameraOn, setCameraOn] = useState(false);
     const [photos, setPhotos] = useState<AuthConfig[]>([]);
-    const [photoStatus, setPhotoStatus] = useState<string>();
 
     useEffect(() => {
         if (route.params) {
@@ -77,19 +71,26 @@ export const ModifyUserScreen = ({
     return cameraOn ? (
         <Camera
             onPress={(uri) => {
-                setPhotoStatus("上传中……");
                 setCameraOn(false);
+                Snackbar.show({
+                    text: "上传中……",
+                    duration: Snackbar.LENGTH_SHORT,
+                });
                 route.params &&
-                    addDoorUserPhotos(route.params.id, uri)
-                        .then(() =>
-                            route.params
-                                ? getDoorUserPhotos(route.params.id)
-                                : Promise.resolve<AuthConfig[]>([]),
-                        )
+                    postFile("image/jpeg", uri, "photo.jpg")
                         .then((r) => {
-                            setPhotos(r);
-                            setPhotoStatus("上传成功");
-                        });
+                            setPhotos((o) => o.concat(r));
+                            Snackbar.show({
+                                text: "上传成功",
+                                duration: Snackbar.LENGTH_SHORT,
+                            });
+                        })
+                        .catch(() =>
+                            Snackbar.show({
+                                text: "上传失败，请重试",
+                                duration: Snackbar.LENGTH_SHORT,
+                            }),
+                        );
             }}
         />
     ) : (
@@ -118,7 +119,6 @@ export const ModifyUserScreen = ({
                     testID="modifyUserCameraButton"
                 />
             )}
-            {photoStatus && <Text>{photoStatus}</Text>}
             <FlatList
                 data={photos}
                 renderItem={({item}) => (

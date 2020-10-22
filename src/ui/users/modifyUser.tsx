@@ -1,19 +1,41 @@
-import {Button, FlatList, Image, Text, TextInput, View} from "react-native";
+import {
+    Button,
+    FlatList,
+    Image,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    View,
+} from "react-native";
 import React, {useEffect, useState} from "react";
 import {ModifyUserRouteProp, UsersNav} from "./usersStack";
-import {
-    addDoorUserPhotos,
-    createDoorUser,
-    getDoorUser,
-    getDoorUserPhotos,
-    updateDoorUser,
-} from "../../network/users";
+import {createDoorUser, getDoorUser, updateDoorUser} from "../../network/users";
 import Snackbar from "react-native-snackbar";
 import {Camera} from "../../components/camera";
+import {AuthConfig, Gender} from "../../models/users";
+import {postFile} from "../../network/core";
+import {simpleAlert} from "../../utils/alerts";
 
-interface AuthConfig {
-    uri: string;
-    headers: {Authorization: string};
+function SelectorItem<T>({
+    item,
+    value,
+    setValue,
+}: {
+    item: T;
+    value: T;
+    setValue: (newValue: T) => void;
+}) {
+    return (
+        <TouchableOpacity
+            onPress={() => setValue(item)}
+            style={{padding: 5}}
+            testID={`selectItem${item}`}>
+            <Text style={{color: item === value ? "tomato" : "black"}}>
+                {item}
+            </Text>
+        </TouchableOpacity>
+    );
 }
 
 export const ModifyUserScreen = ({
@@ -24,24 +46,29 @@ export const ModifyUserScreen = ({
     route: ModifyUserRouteProp;
 }) => {
     const [name, setName] = useState(route.params?.name ?? "");
+    const [gender, setGender] = useState<Gender>(
+        route.params?.gender ?? "未知",
+    );
     const [description, setDescription] = useState(
         route.params?.description ?? "",
     );
     const [cameraOn, setCameraOn] = useState(false);
     const [photos, setPhotos] = useState<AuthConfig[]>([]);
-    const [photoStatus, setPhotoStatus] = useState<string>();
 
     useEffect(() => {
         if (route.params) {
-            getDoorUser(route.params.id).then((r) => {
+            getDoorUser(route.params.id).then(([user, images]) => {
                 if (route.params?.name === name) {
-                    setName(r.name);
+                    setName(user.name);
+                }
+                if (route.params?.gender === gender) {
+                    setGender(user.gender);
                 }
                 if (route.params?.description === description) {
-                    setDescription(r.description);
+                    setDescription(user.description);
                 }
+                setPhotos(images);
             });
-            getDoorUserPhotos(route.params.id).then(setPhotos);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -49,19 +76,25 @@ export const ModifyUserScreen = ({
     return cameraOn ? (
         <Camera
             onPress={(uri) => {
-                setPhotoStatus("上传中……");
                 setCameraOn(false);
-                route.params &&
-                    addDoorUserPhotos(route.params.id, uri)
-                        .then(() =>
-                            route.params
-                                ? getDoorUserPhotos(route.params.id)
-                                : Promise.resolve<AuthConfig[]>([]),
-                        )
-                        .then((r) => {
-                            setPhotos(r);
-                            setPhotoStatus("上传成功");
+                Snackbar.show({
+                    text: "上传中……",
+                    duration: Snackbar.LENGTH_SHORT,
+                });
+                postFile("image/jpeg", uri, "photo.jpg")
+                    .then((r) => {
+                        setPhotos((o) => o.concat(r));
+                        Snackbar.show({
+                            text: "上传成功",
+                            duration: Snackbar.LENGTH_SHORT,
                         });
+                    })
+                    .catch(() =>
+                        Snackbar.show({
+                            text: "上传失败，请重试",
+                            duration: Snackbar.LENGTH_SHORT,
+                        }),
+                    );
             }}
         />
     ) : (
@@ -72,24 +105,37 @@ export const ModifyUserScreen = ({
                 value={name}
                 onChangeText={setName}
             />
+            <View style={{flexDirection: "row"}}>
+                <SelectorItem item="男" value={gender} setValue={setGender} />
+                <SelectorItem item="女" value={gender} setValue={setGender} />
+                <SelectorItem item="未知" value={gender} setValue={setGender} />
+            </View>
             <TextInput
                 testID="modifyUserDescription"
                 placeholder="备注信息"
                 value={description}
                 onChangeText={setDescription}
             />
-            {route.params && (
-                <Button
-                    title="拍照"
-                    onPress={() => setCameraOn(true)}
-                    testID="modifyUserCameraButton"
-                />
-            )}
-            {photoStatus && <Text>{photoStatus}</Text>}
+            <Button
+                title="拍照"
+                onPress={() => setCameraOn(true)}
+                testID="modifyUserCameraButton"
+            />
             <FlatList
                 data={photos}
                 renderItem={({item}) => (
-                    <Image source={item} style={{height: 400, width: 400}} />
+                    <TouchableWithoutFeedback
+                        onPress={() =>
+                            simpleAlert("确定要删除照片吗？", undefined, () =>
+                                setPhotos((o) => o.filter((it) => it !== item)),
+                            )
+                        }
+                        testID="userPhotoTouchable">
+                        <Image
+                            source={item}
+                            style={{height: 400, width: 400}}
+                        />
+                    </TouchableWithoutFeedback>
                 )}
                 keyExtractor={({uri}) => uri}
                 style={{height: "50%"}}
@@ -102,8 +148,16 @@ export const ModifyUserScreen = ({
                         duration: Snackbar.LENGTH_SHORT,
                     });
                     (route.params === undefined
-                        ? createDoorUser(name, description)
-                        : updateDoorUser({...route.params, name, description})
+                        ? createDoorUser(
+                              name,
+                              description,
+                              gender,
+                              photos.map(({src}) => src),
+                          )
+                        : updateDoorUser(
+                              {...route.params, name, description, gender},
+                              photos.map(({src}) => src),
+                          )
                     )
                         .then(({msg}: {msg: string}) => {
                             navigation.navigate("UserList", {
@@ -114,9 +168,9 @@ export const ModifyUserScreen = ({
                                 duration: Snackbar.LENGTH_SHORT,
                             });
                         })
-                        .catch((e) =>
+                        .catch(() =>
                             Snackbar.show({
-                                text: e,
+                                text: "请求失败，请重试",
                                 duration: Snackbar.LENGTH_SHORT,
                             }),
                         );

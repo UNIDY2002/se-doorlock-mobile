@@ -57,6 +57,7 @@ export const UserListScreen = simpleRefreshList(
                 <Text style={{fontSize: 20, fontWeight: "bold"}}>
                     {item.name}
                 </Text>
+                <Text style={{lineHeight: 24}}>{item.gender}</Text>
                 <Text style={{lineHeight: 24}}>{item.description}</Text>
             </TouchableOpacity>
         </Swipeable>

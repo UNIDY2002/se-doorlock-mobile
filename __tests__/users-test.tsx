@@ -57,6 +57,8 @@ test("users", async () => {
         "z",
     );
     await sleep(500);
+    root.findByProps({testID: "selectItem男"}).props.onPress();
+    await sleep(500);
 
     // Delete a user
     expect(root.findAllByType(RectButton).length).toEqual(3);

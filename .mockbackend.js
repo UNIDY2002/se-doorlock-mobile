@@ -1,9 +1,12 @@
-import {GET_DOOR_DEVICES_URL, GET_DOOR_USERS_URL, LOGIN_URL, USER_PHOTO_URL} from "./src/constants/urls";
+import {GET_DOOR_DEVICES_URL, GET_DOOR_USERS_URL, LOGIN_URL, POST_FILE_URL, USER_PHOTO_URL} from "./src/constants/urls";
 import {enableFetchMocks} from 'jest-fetch-mock'
 
 enableFetchMocks()
 
-const users = [{id: 0, name: "a", notes: "x"}, {id: 1, name: "b", notes: "y"}];
+const users = [
+    {id: 0, name: "a", notes: "x", gender: "男", images: [{src: ""}]},
+    {id: 1, name: "b", notes: "y", gender: "女", images: [{src: ""}]},
+];
 const devices = [{id: 1, description: "p"}, {id: 2, description: "q"}];
 
 fetchMock.mockIf(/^.*$/, (req) => {
@@ -17,9 +20,9 @@ fetchMock.mockIf(/^.*$/, (req) => {
             });
         case GET_DOOR_USERS_URL:
             if (req.method === "POST" && JSON.parse(String(req.body)).name.length) {
-                const {name, notes} = JSON.parse(String(req.body));
+                const {name, notes, gender, images} = JSON.parse(String(req.body));
                 const id = users.length ? users[users.length - 1].id + 1 : 0;
-                users.push({id, name, notes});
+                users.push({id, name, notes, gender, images});
             }
             return Promise.resolve({
                 body: JSON.stringify(req.method === "GET"
@@ -31,7 +34,12 @@ fetchMock.mockIf(/^.*$/, (req) => {
             return Promise.resolve({
                 body: JSON.stringify(devices),
                 headers: {"Content-Type": "application/json"},
-            })
+            });
+        case POST_FILE_URL:
+            return Promise.resolve({
+                body: JSON.stringify([{path: "", url: ""}]),
+                headers: {"Content-Type": "application/json"},
+            });
     }
     if (req.url.startsWith(USER_PHOTO_URL)) {
         return Promise.resolve({

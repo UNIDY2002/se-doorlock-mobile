@@ -37,10 +37,20 @@ export const getDoorUser = (uid: number): Promise<[User, AuthConfig[]]> =>
         ],
     );
 
-export const createDoorUser = (name: string, description: string) =>
+export const createDoorUser = (
+    name: string,
+    description: string,
+    gender: Gender,
+    images: string[],
+) =>
     authedFetch(GET_DOOR_USERS_URL, {
         method: "POST",
-        body: JSON.stringify({name, notes: description}),
+        body: JSON.stringify({
+            name,
+            notes: description,
+            gender,
+            images: images.map((src) => ({src})),
+        }),
         headers: {"Content-Type": "application/json"},
     });
 

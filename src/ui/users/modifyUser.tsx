@@ -76,21 +76,20 @@ export const ModifyUserScreen = ({
                     text: "上传中……",
                     duration: Snackbar.LENGTH_SHORT,
                 });
-                route.params &&
-                    postFile("image/jpeg", uri, "photo.jpg")
-                        .then((r) => {
-                            setPhotos((o) => o.concat(r));
-                            Snackbar.show({
-                                text: "上传成功",
-                                duration: Snackbar.LENGTH_SHORT,
-                            });
-                        })
-                        .catch(() =>
-                            Snackbar.show({
-                                text: "上传失败，请重试",
-                                duration: Snackbar.LENGTH_SHORT,
-                            }),
-                        );
+                postFile("image/jpeg", uri, "photo.jpg")
+                    .then((r) => {
+                        setPhotos((o) => o.concat(r));
+                        Snackbar.show({
+                            text: "上传成功",
+                            duration: Snackbar.LENGTH_SHORT,
+                        });
+                    })
+                    .catch(() =>
+                        Snackbar.show({
+                            text: "上传失败，请重试",
+                            duration: Snackbar.LENGTH_SHORT,
+                        }),
+                    );
             }}
         />
     ) : (
@@ -112,13 +111,11 @@ export const ModifyUserScreen = ({
                 value={description}
                 onChangeText={setDescription}
             />
-            {route.params && (
-                <Button
-                    title="拍照"
-                    onPress={() => setCameraOn(true)}
-                    testID="modifyUserCameraButton"
-                />
-            )}
+            <Button
+                title="拍照"
+                onPress={() => setCameraOn(true)}
+                testID="modifyUserCameraButton"
+            />
             <FlatList
                 data={photos}
                 renderItem={({item}) => (
@@ -135,7 +132,12 @@ export const ModifyUserScreen = ({
                         duration: Snackbar.LENGTH_SHORT,
                     });
                     (route.params === undefined
-                        ? createDoorUser(name, description)
+                        ? createDoorUser(
+                              name,
+                              description,
+                              gender,
+                              photos.map(({src}) => src),
+                          )
                         : updateDoorUser(
                               {...route.params, name, description, gender},
                               photos.map(({src}) => src),

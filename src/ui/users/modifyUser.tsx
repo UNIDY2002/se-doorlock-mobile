@@ -5,6 +5,7 @@ import {
     Text,
     TextInput,
     TouchableOpacity,
+    TouchableWithoutFeedback,
     View,
 } from "react-native";
 import React, {useEffect, useState} from "react";
@@ -14,6 +15,7 @@ import Snackbar from "react-native-snackbar";
 import {Camera} from "../../components/camera";
 import {AuthConfig, Gender} from "../../models/users";
 import {postFile} from "../../network/core";
+import {simpleAlert} from "../../utils/alerts";
 
 function SelectorItem<T>({
     item,
@@ -119,7 +121,18 @@ export const ModifyUserScreen = ({
             <FlatList
                 data={photos}
                 renderItem={({item}) => (
-                    <Image source={item} style={{height: 400, width: 400}} />
+                    <TouchableWithoutFeedback
+                        onPress={() =>
+                            simpleAlert("确定要删除照片吗？", undefined, () =>
+                                setPhotos((o) => o.filter((it) => it !== item)),
+                            )
+                        }
+                        testID="userPhotoTouchable">
+                        <Image
+                            source={item}
+                            style={{height: 400, width: 400}}
+                        />
+                    </TouchableWithoutFeedback>
                 )}
                 keyExtractor={({uri}) => uri}
                 style={{height: "50%"}}

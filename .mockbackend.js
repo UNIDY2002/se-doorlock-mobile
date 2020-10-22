@@ -20,9 +20,9 @@ fetchMock.mockIf(/^.*$/, (req) => {
             });
         case GET_DOOR_USERS_URL:
             if (req.method === "POST" && JSON.parse(String(req.body)).name.length) {
-                const {name, notes} = JSON.parse(String(req.body));
+                const {name, notes, gender, images} = JSON.parse(String(req.body));
                 const id = users.length ? users[users.length - 1].id + 1 : 0;
-                users.push({id, name, notes});
+                users.push({id, name, notes, gender, images});
             }
             return Promise.resolve({
                 body: JSON.stringify(req.method === "GET"
@@ -36,7 +36,10 @@ fetchMock.mockIf(/^.*$/, (req) => {
                 headers: {"Content-Type": "application/json"},
             });
         case POST_FILE_URL:
-            return Promise.resolve({path: "", url: ""});
+            return Promise.resolve({
+                body: JSON.stringify([{path: "", url: ""}]),
+                headers: {"Content-Type": "application/json"},
+            });
     }
     if (req.url.startsWith(USER_PHOTO_URL)) {
         return Promise.resolve({

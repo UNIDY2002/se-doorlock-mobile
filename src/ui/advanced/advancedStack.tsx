@@ -4,11 +4,14 @@ import {
     StackNavigationProp,
 } from "@react-navigation/stack";
 import {HomeScreen} from "./home";
-import {CameraTempScreen} from "./cameraTemp";
+import {AdvancedQueryScreen} from "./advancedQuery";
+import {Query} from "../../models/history";
+import {HistoryScreen} from "../general/history";
 
 export type AdvancedStackParamList = {
     Home: undefined;
-    CameraTemp: undefined;
+    AdvancedQuery: undefined;
+    AdvancedHistory: {query: Query};
 };
 
 const Stack = createStackNavigator<AdvancedStackParamList>();
@@ -23,9 +26,14 @@ export const AdvancedStack = () => (
             options={{title: "高级"}}
         />
         <Stack.Screen
-            name="CameraTemp"
-            component={CameraTempScreen}
-            options={{title: "相机"}}
+            name="AdvancedQuery"
+            component={AdvancedQueryScreen}
+            options={{title: "高级查询"}}
+        />
+        <Stack.Screen
+            name="AdvancedHistory"
+            component={HistoryScreen}
+            options={{title: "查询结果"}}
         />
     </Stack.Navigator>
 );

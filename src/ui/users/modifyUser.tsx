@@ -196,6 +196,26 @@ export const ModifyUserScreen = ({
                     <Text style={{textAlign: "center"}}>保存</Text>
                 </TouchableOpacity>
             </View>
+            {route.params && (
+                <View style={form.row}>
+                    <TouchableOpacity
+                        style={{
+                            flex: 1,
+                            backgroundColor: "#CCC",
+                            padding: 10,
+                            marginHorizontal: 30,
+                        }}
+                        onPress={() =>
+                            route.params &&
+                            navigation.navigate("UserHistory", {
+                                userId: route.params.id,
+                            })
+                        }
+                        testID="viewUserHistoryButton">
+                        <Text style={{textAlign: "center"}}>查看出入记录</Text>
+                    </TouchableOpacity>
+                </View>
+            )}
             <FlatList
                 data={photos}
                 renderItem={({item}) => (

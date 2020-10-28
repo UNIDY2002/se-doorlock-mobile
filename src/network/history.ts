@@ -4,19 +4,19 @@ import {History, Query} from "../models/history";
 
 const parseQueryString = (query: Query) => {
     const queryObject = {};
-    if ("userId" in query) {
+    if ("userId" in query && query.userId !== undefined) {
         // @ts-ignore
         queryObject.user_id = query.userId;
     }
-    if ("deviceId" in query) {
+    if ("deviceId" in query && query.deviceId !== undefined) {
         // @ts-ignore
         queryObject.device_id = query.deviceId;
     }
-    if ("name" in query) {
+    if ("name" in query && query.name) {
         // @ts-ignore
         queryObject.name = query.name;
     }
-    if ("gender" in query) {
+    if ("gender" in query && query.gender) {
         // @ts-ignore
         queryObject.gender = query.gender;
     }

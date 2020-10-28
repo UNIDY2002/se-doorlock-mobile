@@ -11,3 +11,5 @@ export const USER_PHOTO_URL = `${BASE_URL}/v1/doorUser/photos`;
 export const ASSETS_URL = `${BASE_URL}/assets`;
 
 export const POST_FILE_URL = `${BASE_URL}/cms/file`;
+
+export const GET_HISTORY_URL = `${BASE_URL}/v1/history`;

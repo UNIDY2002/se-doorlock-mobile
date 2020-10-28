@@ -10,7 +10,7 @@ const parseQueryString = (query: Query) => {
     }
     if ("deviceId" in query) {
         // @ts-ignore
-        queryObject.device_id = query.userId;
+        queryObject.device_id = query.deviceId;
     }
     if ("name" in query) {
         // @ts-ignore

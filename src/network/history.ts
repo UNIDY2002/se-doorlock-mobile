@@ -1,9 +1,38 @@
 import {authedFetch} from "./core";
 import {GET_HISTORY_URL} from "../constants/urls";
-import {History} from "../models/history";
+import {History, Query} from "../models/history";
 
-export const getUserHistory = (userId: number): Promise<History[]> =>
-    authedFetch(`${GET_HISTORY_URL}?user_id=${userId}`).then((r) =>
+const parseQueryString = (query: Query) => {
+    const queryObject = {};
+    if ("userId" in query) {
+        // @ts-ignore
+        queryObject.user_id = query.userId;
+    }
+    if ("deviceId" in query) {
+        // @ts-ignore
+        queryObject.device_id = query.userId;
+    }
+    if ("name" in query) {
+        // @ts-ignore
+        queryObject.name = query.name;
+    }
+    if ("gender" in query) {
+        // @ts-ignore
+        queryObject.gender = query.gender;
+    }
+    return Object.keys(queryObject)
+        .map(
+            (key) =>
+                `${encodeURIComponent(key)}=${encodeURIComponent(
+                    // @ts-ignore
+                    queryObject[key],
+                )}`,
+        )
+        .join("&");
+};
+
+export const getHistory = (query: Query): Promise<History[]> =>
+    authedFetch(`${GET_HISTORY_URL}?${parseQueryString(query)}`).then((r) =>
         r.map(
             ({
                 device_id,

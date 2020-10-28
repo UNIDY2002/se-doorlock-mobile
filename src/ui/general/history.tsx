@@ -1,13 +1,11 @@
 import React from "react";
-import {UserHistoryRouteProp} from "./usersStack";
 import {Text, TouchableOpacity} from "react-native";
 import {Material} from "../../styles/material";
 import {simpleRefreshList} from "../../components/simpleRefreshList";
-import {getUserHistory} from "../../network/history";
+import {getHistory} from "../../network/history";
 
-export const UserHistoryScreen = simpleRefreshList(
-    ({route}: {route: UserHistoryRouteProp}) =>
-        getUserHistory(route.params.userId),
+export const HistoryScreen = simpleRefreshList(
+    ({route}) => getHistory(route.params),
     ({id, userName, deviceId, time}) => (
         <TouchableOpacity style={Material.card} testID="userHistoryItem">
             <Text style={{fontSize: 20, fontWeight: "bold"}}>{userName}</Text>

@@ -8,7 +8,7 @@ import {HeaderButton} from "../../components/headerButtons";
 import {ModifyUserScreen} from "./modifyUser";
 import {RouteProp} from "@react-navigation/native";
 import {User} from "../../models/users";
-import {UserHistoryScreen} from "./userHistory";
+import {HistoryScreen} from "../general/history";
 
 export type UsersStackParamList = {
     UserList: {refreshTimestamp: number} | undefined;
@@ -21,11 +21,6 @@ const Stack = createStackNavigator<UsersStackParamList>();
 export type UsersNav = StackNavigationProp<UsersStackParamList>;
 
 export type ModifyUserRouteProp = RouteProp<UsersStackParamList, "ModifyUser">;
-
-export type UserHistoryRouteProp = RouteProp<
-    UsersStackParamList,
-    "UserHistory"
->;
 
 export const UsersStack = () => (
     <Stack.Navigator>
@@ -52,7 +47,7 @@ export const UsersStack = () => (
         />
         <Stack.Screen
             name="UserHistory"
-            component={UserHistoryScreen}
+            component={HistoryScreen}
             options={{title: "出入记录"}}
         />
     </Stack.Navigator>

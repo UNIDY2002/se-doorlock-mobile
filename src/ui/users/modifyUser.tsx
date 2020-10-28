@@ -17,27 +17,7 @@ import {AuthConfig, Gender} from "../../models/users";
 import {postFile} from "../../network/core";
 import {simpleAlert} from "../../utils/alerts";
 import form from "../../styles/form";
-
-function SelectorItem<T>({
-    item,
-    value,
-    setValue,
-}: {
-    item: T;
-    value: T;
-    setValue: (newValue: T) => void;
-}) {
-    return (
-        <TouchableOpacity
-            onPress={() => setValue(item)}
-            style={{padding: 5}}
-            testID={`selectItem${item}`}>
-            <Text style={{color: item === value ? "tomato" : "black"}}>
-                {item}
-            </Text>
-        </TouchableOpacity>
-    );
-}
+import {SelectorItem} from "../../components/touchableItems";
 
 export const ModifyUserScreen = ({
     navigation,

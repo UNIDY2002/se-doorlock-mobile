@@ -5,6 +5,7 @@ import {
     Text,
     TouchableHighlight,
     TouchableNativeFeedback,
+    TouchableOpacity,
     View,
 } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -46,3 +47,20 @@ export const TouchableItem = ({
         </TouchableNativeFeedback>
     );
 };
+
+export const SelectorItem = <T,>({
+    item,
+    value,
+    setValue,
+}: {
+    item: T;
+    value: T;
+    setValue: (newValue: T) => void;
+}) => (
+    <TouchableOpacity
+        onPress={() => setValue(item)}
+        style={{padding: 5}}
+        testID={`selectItem${item}`}>
+        <Text style={{color: item === value ? "tomato" : "black"}}>{item}</Text>
+    </TouchableOpacity>
+);

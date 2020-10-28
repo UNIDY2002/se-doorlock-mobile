@@ -11,7 +11,7 @@ import {HistoryScreen} from "../general/history";
 export type AdvancedStackParamList = {
     Home: undefined;
     AdvancedQuery: undefined;
-    AdvancedHistory: {query: Query};
+    AdvancedHistory: Query;
 };
 
 const Stack = createStackNavigator<AdvancedStackParamList>();

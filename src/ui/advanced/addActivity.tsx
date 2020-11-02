@@ -172,9 +172,11 @@ const AddActivityUI = ({
                             };
                             for (const e of activities) {
                                 if (
-                                    String(e.repeat.sort((a, b) => a - b)) ===
+                                    String(
+                                        [...e.repeat].sort((a, b) => a - b),
+                                    ) ===
                                         String(
-                                            activity.repeat.sort(
+                                            [...activity.repeat].sort(
                                                 (a, b) => a - b,
                                             ),
                                         ) &&
@@ -182,9 +184,11 @@ const AddActivityUI = ({
                                     e.beginMinute === activity.beginMinute &&
                                     e.endHour === activity.endHour &&
                                     e.endMinute === activity.endMinute &&
-                                    String(e.users.sort((a, b) => a - b)) ===
+                                    String(
+                                        [...e.users].sort((a, b) => a - b),
+                                    ) ===
                                         String(
-                                            activity.users.sort(
+                                            [...activity.users].sort(
                                                 (a, b) => a - b,
                                             ),
                                         )

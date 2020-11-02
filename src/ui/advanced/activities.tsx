@@ -11,6 +11,7 @@ import Swipeable from "react-native-gesture-handler/Swipeable";
 import {AdvancedNav} from "./advancedStack";
 import {Activity} from "../../redux/states/config";
 import {REMOVE_ACTIVITY} from "../../redux/constants";
+import dayjs from "dayjs";
 
 const pad = (data: number) => {
     const str = String(data);
@@ -55,7 +56,30 @@ const ActivitiesUI = ({
                 )}>
                 <TouchableOpacity
                     style={Material.card}
-                    onPress={() => navigation.navigate("AdvancedHistory", {})}
+                    onPress={() => {
+                        if (item.repeat.indexOf(dayjs().day()) === -1) {
+                            simpleAlert(
+                                "今天没有打卡活动",
+                                undefined,
+                                () => {},
+                            );
+                        } else {
+                            navigation.navigate("AdvancedHistory", {
+                                begin: dayjs()
+                                    .startOf("date")
+                                    .add(item.beginHour, "hour")
+                                    .add(item.beginMinute, "minute")
+                                    .toDate()
+                                    .valueOf(),
+                                end: dayjs()
+                                    .startOf("date")
+                                    .add(item.endHour, "hour")
+                                    .add(item.endMinute, "minute")
+                                    .toDate()
+                                    .valueOf(),
+                            });
+                        }
+                    }}
                     testID="activityItem">
                     <Text style={{fontSize: 20, fontWeight: "bold"}}>
                         重复：{item.repeat}

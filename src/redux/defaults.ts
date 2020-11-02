@@ -15,6 +15,7 @@ export const defaultConfig: Config = {
             beginMinute: 0,
             endHour: 9,
             endMinute: 0,
+            users: [1, 2],
         },
     ],
 };

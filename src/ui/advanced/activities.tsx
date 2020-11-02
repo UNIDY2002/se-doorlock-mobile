@@ -64,20 +64,7 @@ const ActivitiesUI = ({
                                 () => {},
                             );
                         } else {
-                            navigation.navigate("AdvancedHistory", {
-                                begin: dayjs()
-                                    .startOf("date")
-                                    .add(item.beginHour, "hour")
-                                    .add(item.beginMinute, "minute")
-                                    .toDate()
-                                    .valueOf(),
-                                end: dayjs()
-                                    .startOf("date")
-                                    .add(item.endHour, "hour")
-                                    .add(item.endMinute, "minute")
-                                    .toDate()
-                                    .valueOf(),
-                            });
+                            navigation.navigate("ActivityDetail", item);
                         }
                     }}
                     testID="activityItem">

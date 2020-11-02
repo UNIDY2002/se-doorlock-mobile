@@ -1,6 +1,10 @@
 import {authedFetch} from "./core";
 import {GET_HISTORY_URL} from "../constants/urls";
-import {History, Query} from "../models/history";
+import {ActivityDetail, History, Query} from "../models/history";
+import {Activity} from "../redux/states/config";
+import dayjs from "dayjs";
+import {getDoorUsers} from "./users";
+import {User} from "../models/users";
 
 const parseQueryString = (query: Query) => {
     const queryObject = {};
@@ -63,3 +67,40 @@ export const getHistory = (query: Query): Promise<History[]> =>
             }),
         ),
     );
+
+export const getActivityDetail = async ({
+    beginHour,
+    beginMinute,
+    endHour,
+    endMinute,
+    users,
+}: Activity): Promise<ActivityDetail[]> => {
+    const [filteredHistory, allUsers]: [History[], User[]] = await Promise.all([
+        getHistory({
+            begin: dayjs()
+                .startOf("date")
+                .add(beginHour, "hour")
+                .add(beginMinute, "minute")
+                .toDate()
+                .valueOf(),
+            end: dayjs()
+                .startOf("date")
+                .add(endHour, "hour")
+                .add(endMinute, "minute")
+                .toDate()
+                .valueOf(),
+        }),
+        getDoorUsers(),
+    ]);
+    return allUsers
+        .filter((it) => users.indexOf(it.id) !== -1)
+        .map(({id, name}) => {
+            const history = filteredHistory.find((it) => it.userId === id);
+            return {
+                userId: id,
+                name,
+                deviceId: history?.deviceId,
+                time: history?.time,
+            };
+        });
+};

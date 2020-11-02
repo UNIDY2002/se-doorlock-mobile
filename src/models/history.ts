@@ -5,7 +5,7 @@ export interface History {
     userId: number;
     deviceId: number;
     userName: string;
-    time: string;
+    time: number;
 }
 
 export interface Query {
@@ -15,4 +15,11 @@ export interface Query {
     gender?: Gender;
     begin?: number;
     end?: number;
+}
+
+export interface ActivityDetail {
+    userId: number;
+    deviceId?: number;
+    name: string;
+    time?: number;
 }

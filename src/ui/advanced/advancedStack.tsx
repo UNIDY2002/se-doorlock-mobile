@@ -8,12 +8,15 @@ import {AdvancedQueryScreen} from "./advancedQuery";
 import {Query} from "../../models/history";
 import {HistoryScreen} from "../general/history";
 import {ActivitiesScreen} from "./activities";
+import {Activity} from "../../redux/states/config";
+import {ActivityDetailScreen} from "./activityDetail";
 
 export type AdvancedStackParamList = {
     Home: undefined;
     AdvancedQuery: undefined;
     AdvancedHistory: Query;
     Activities: undefined;
+    ActivityDetail: Activity;
 };
 
 const Stack = createStackNavigator<AdvancedStackParamList>();
@@ -41,6 +44,11 @@ export const AdvancedStack = () => (
             name="Activities"
             component={ActivitiesScreen}
             options={{title: "打卡"}}
+        />
+        <Stack.Screen
+            name="ActivityDetail"
+            component={ActivityDetailScreen}
+            options={{title: "打卡情况"}}
         />
     </Stack.Navigator>
 );

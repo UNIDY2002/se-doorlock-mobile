@@ -33,11 +33,11 @@ test("camera", async () => {
 
     // Go to one user and take photo
     root.findAllByProps({testID: "userItem"})[0].props.onPress();
-    await sleep(500);
+    await sleep(2000);
     root.findByProps({testID: "modifyUserCameraButton"}).props.onPress();
     await sleep(2000);
     root.findByProps({testID: "CameraForTest"}).props.onPress();
-    await sleep(2000);
+    await sleep(4000);
 
     // Delete the photo taken
     root.findAllByProps({testID: "userPhotoTouchable"})[0].props.onPress();

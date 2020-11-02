@@ -31,4 +31,8 @@ test("devices", async () => {
     root.findByProps({testID: "scanQrCamera"}).props.onBarCode("first");
     root.findByProps({testID: "scanQrCamera"}).props.onBarCode("second"); // See what will happen when scanned twice (which is very common in reality)
     await sleep(500);
+
+    // Find a device and view detail
+    root.findAllByProps({testID: "DeviceItemInList"})[0].props.onPress();
+    await sleep(800);
 });

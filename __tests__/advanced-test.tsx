@@ -68,4 +68,8 @@ test("devices", async () => {
     // Now delete it
     root.findAllByProps({testID: "activitySwipeable"})[0].props.onPress();
     await sleep(1000);
+
+    // Let's logout!
+    root.findByProps({testID: "logout"}).props.onPress();
+    await sleep(1000);
 });

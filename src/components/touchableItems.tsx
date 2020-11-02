@@ -64,3 +64,5 @@ export const SelectorItem = <T,>({
         <Text style={{color: item === value ? "tomato" : "black"}}>{item}</Text>
     </TouchableOpacity>
 );
+
+export const Separator = () => <View style={{height: 10}} />;

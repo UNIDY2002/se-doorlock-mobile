@@ -30,4 +30,8 @@ test("devices", async () => {
     await sleep(500);
     root.findByProps({testID: "enterAdvancedHistory"}).props.onPress();
     await sleep(500);
+
+    // Press activities button
+    root.findByProps({testID: "enterActivities"}).props.onPress();
+    await sleep(500);
 });

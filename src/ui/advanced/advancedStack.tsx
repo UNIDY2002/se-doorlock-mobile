@@ -7,7 +7,7 @@ import {HomeScreen} from "./home";
 import {AdvancedQueryScreen} from "./advancedQuery";
 import {Query} from "../../models/history";
 import {HistoryScreen} from "../general/history";
-import {ActivitiesScreen} from "./history";
+import {ActivitiesScreen} from "./activities";
 
 export type AdvancedStackParamList = {
     Home: undefined;

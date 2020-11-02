@@ -80,8 +80,15 @@ const ActivitiesUI = ({
                 </TouchableOpacity>
             </Swipeable>
         )}
-        keyExtractor={({repeat, beginHour, beginMinute, endHour, endMinute}) =>
-            `[${repeat}]${beginHour}:${beginMinute}-${endHour}:${endMinute}`
+        keyExtractor={({
+            repeat,
+            beginHour,
+            beginMinute,
+            endHour,
+            endMinute,
+            users,
+        }) =>
+            `[${repeat}]${beginHour}:${beginMinute}-${endHour}:${endMinute} (${users})`
         }
     />
 );

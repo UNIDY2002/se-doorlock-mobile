@@ -50,7 +50,8 @@ const ActivitiesUI = ({
                                     });
                                 },
                             );
-                        }}>
+                        }}
+                        testID="activitySwipeable">
                         <Icon name="trash" size={40} color="tomato" />
                     </RectButton>
                 )}>

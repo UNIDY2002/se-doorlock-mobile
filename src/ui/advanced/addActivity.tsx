@@ -107,6 +107,7 @@ const AddActivityUI = ({
                     <TouchableOpacity
                         style={form.row}
                         key={id}
+                        testID={"addActivityUser-" + id}
                         onPress={() =>
                             setUsers((prevState) =>
                                 prevState.indexOf(id) === -1

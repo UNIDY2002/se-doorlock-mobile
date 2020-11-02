@@ -25,6 +25,8 @@ global.FormData = FormDataMock
 
 jest.mock("src/components/camera");
 
+jest.mock("src/components/DatePickerTrigger");
+
 jest.mock("src/utils/alerts", () => ({
     simpleAlert: (title, message, onConfirm) => {
         onConfirm();

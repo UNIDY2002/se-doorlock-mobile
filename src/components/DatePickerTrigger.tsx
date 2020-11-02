@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import React, {useState} from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import dayjs from "dayjs";
 
 export const DatePickerTrigger = ({
     date,
@@ -33,9 +34,7 @@ export const DatePickerTrigger = ({
                     style={{
                         fontSize: 16,
                     }}>
-                    {`${date.getFullYear()}-${
-                        date.getMonth() + 1
-                    }-${date.getDate()}`}
+                    {dayjs(date).format("YYYY-MM-DD")}
                 </Text>
             </TouchableOpacity>
             {visible && Platform.OS === "android" && (

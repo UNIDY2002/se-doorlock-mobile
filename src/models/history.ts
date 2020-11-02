@@ -13,4 +13,6 @@ export interface Query {
     deviceId?: number;
     name?: string;
     gender?: Gender;
+    begin?: number;
+    end?: number;
 }

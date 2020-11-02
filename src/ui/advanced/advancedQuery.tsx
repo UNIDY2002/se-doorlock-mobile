@@ -6,6 +6,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import {Gender} from "../../models/users";
 import form from "../../styles/form";
 import {DatePickerTrigger} from "../../components/DatePickerTrigger";
+import dayjs from "dayjs";
 
 export const AdvancedQueryScreen = ({
     navigation,
@@ -93,6 +94,8 @@ export const AdvancedQueryScreen = ({
                             String(Number(deviceId)) === deviceId
                                 ? Number(deviceId)
                                 : undefined,
+                        begin: dayjs(begin).startOf("date").toDate().valueOf(),
+                        end: dayjs(end).endOf("date").toDate().valueOf(),
                     })
                 }
                 icon={<Icon name="play" size={16} />}

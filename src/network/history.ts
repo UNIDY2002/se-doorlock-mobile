@@ -20,6 +20,14 @@ const parseQueryString = (query: Query) => {
         // @ts-ignore
         queryObject.gender = query.gender;
     }
+    if ("begin" in query && query.begin) {
+        // @ts-ignore
+        queryObject.begin = query.begin;
+    }
+    if ("end" in query && query.end) {
+        // @ts-ignore
+        queryObject.end = query.end;
+    }
     return Object.keys(queryObject)
         .map(
             (key) =>

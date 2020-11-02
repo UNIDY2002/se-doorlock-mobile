@@ -172,14 +172,22 @@ const AddActivityUI = ({
                             };
                             for (const e of activities) {
                                 if (
-                                    String(e.repeat.sort()) ===
-                                        String(activity.repeat.sort()) &&
+                                    String(e.repeat.sort((a, b) => a - b)) ===
+                                        String(
+                                            activity.repeat.sort(
+                                                (a, b) => a - b,
+                                            ),
+                                        ) &&
                                     e.beginHour === activity.beginHour &&
                                     e.beginMinute === activity.beginMinute &&
                                     e.endHour === activity.endHour &&
                                     e.endMinute === activity.endMinute &&
-                                    String(e.users.sort()) ===
-                                        String(activity.users.sort())
+                                    String(e.users.sort((a, b) => a - b)) ===
+                                        String(
+                                            activity.users.sort(
+                                                (a, b) => a - b,
+                                            ),
+                                        )
                                 ) {
                                     hint("已有相同打卡活动，请修改后重试。");
                                     return;

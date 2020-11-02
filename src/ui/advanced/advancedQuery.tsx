@@ -5,6 +5,7 @@ import {SelectorItem, TouchableItem} from "../../components/touchableItems";
 import Icon from "react-native-vector-icons/FontAwesome";
 import {Gender} from "../../models/users";
 import form from "../../styles/form";
+import {DatePickerTrigger} from "../../components/DatePickerTrigger";
 
 export const AdvancedQueryScreen = ({
     navigation,
@@ -14,6 +15,8 @@ export const AdvancedQueryScreen = ({
     const [name, setName] = useState("");
     const [gender, setGender] = useState<Gender | "不选">("不选");
     const [deviceId, setDeviceId] = useState("");
+    const [begin, setBegin] = useState(new Date());
+    const [end, setEnd] = useState(new Date());
 
     return (
         <ScrollView style={{padding: 10}}>
@@ -60,6 +63,24 @@ export const AdvancedQueryScreen = ({
                     placeholder="备注信息"
                     value={deviceId}
                     onChangeText={setDeviceId}
+                />
+            </View>
+            <View style={form.row}>
+                <Text style={{flex: 1, textAlign: "center"}}>起始日期</Text>
+                <DatePickerTrigger
+                    date={begin}
+                    onChange={setBegin}
+                    text="设置起始日期"
+                    flex={2}
+                />
+            </View>
+            <View style={form.row}>
+                <Text style={{flex: 1, textAlign: "center"}}>终止日期</Text>
+                <DatePickerTrigger
+                    date={end}
+                    onChange={setEnd}
+                    text="设置终止日期"
+                    flex={2}
                 />
             </View>
             <TouchableItem

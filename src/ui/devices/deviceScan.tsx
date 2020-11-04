@@ -1,19 +1,34 @@
 import {DevicesNav} from "./devicesStack";
 import React, {useState} from "react";
 import {Camera} from "../../components/camera";
-import {simpleAlert} from "../../utils/alerts";
+import {bindDoorAdmin} from "../../network/devices";
+import Snackbar from "react-native-snackbar";
 
 export const DeviceScanScreen = ({navigation}: {navigation: DevicesNav}) => {
     const setCaptured = useState(false)[1];
     return (
         <Camera
-            onBarCode={(text) => {
+            onBarCode={(uuid) => {
                 setCaptured((original) => {
                     if (!original) {
-                        navigation.navigate("DeviceList", {
-                            refreshTimestamp: new Date().valueOf(),
-                        });
-                        simpleAlert("扫码结果", text, () => {});
+                        bindDoorAdmin(uuid)
+                            .then(() =>
+                                Snackbar.show({
+                                    text: "绑定成功",
+                                    duration: Snackbar.LENGTH_SHORT,
+                                }),
+                            )
+                            .catch(() =>
+                                Snackbar.show({
+                                    text: "绑定失败，请重试",
+                                    duration: Snackbar.LENGTH_SHORT,
+                                }),
+                            )
+                            .then(() =>
+                                navigation.navigate("DeviceList", {
+                                    refreshTimestamp: new Date().valueOf(),
+                                }),
+                            );
                     }
                     return true;
                 });

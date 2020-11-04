@@ -1,4 +1,5 @@
 import {
+    BIND_DOOR_ADMIN_URL,
     GET_DOOR_DEVICES_URL,
     GET_DOOR_USERS_URL,
     GET_HISTORY_URL,
@@ -79,5 +80,7 @@ fetchMock.mockIf(/^.*$/, (req) => {
             }]),
             headers: {"Content-Type": "application/json"},
         })
+    } else if (req.url.startsWith(BIND_DOOR_ADMIN_URL)) {
+        return Promise.resolve({headers: {"Content-Type": "application/json"}});
     }
 });

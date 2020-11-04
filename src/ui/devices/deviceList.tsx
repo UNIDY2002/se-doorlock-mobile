@@ -21,6 +21,7 @@ export const DeviceListScreen = simpleRefreshList(
                         alignItems: "center",
                         justifyContent: "center",
                     }}
+                    testID="unbindDevice"
                     onPress={() => {
                         simpleAlert(
                             "您确定要解除绑定吗？",

@@ -26,15 +26,18 @@ export function simpleRefreshList<T>(
             setRefreshing(true);
             dataSource(props)
                 .then(setData)
-                .catch((e) =>
+                .catch((e) => {
+                    if (typeof e === "string" && e.includes("没有找到相关")) {
+                        setData([]);
+                    }
                     Snackbar.show({
                         text:
                             typeof e === "string" && e.length > 0
                                 ? e
                                 : "网络异常，请重试",
                         duration: Snackbar.LENGTH_SHORT,
-                    }),
-                )
+                    });
+                })
                 .then(() => setRefreshing(false));
         };
         // @ts-ignore

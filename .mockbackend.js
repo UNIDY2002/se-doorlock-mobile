@@ -4,7 +4,7 @@ import {
     GET_DOOR_USERS_URL,
     GET_HISTORY_URL,
     LOGIN_URL,
-    POST_FILE_URL,
+    POST_FILE_URL, UNBIND_DOOR_ADMIN_URL,
     USER_PHOTO_URL
 } from "./src/constants/urls";
 import {enableFetchMocks} from 'jest-fetch-mock'
@@ -81,6 +81,8 @@ fetchMock.mockIf(/^.*$/, (req) => {
             headers: {"Content-Type": "application/json"},
         })
     } else if (req.url.startsWith(BIND_DOOR_ADMIN_URL)) {
+        return Promise.resolve({headers: {"Content-Type": "application/json"}});
+    } else if (req.url.startsWith(UNBIND_DOOR_ADMIN_URL)) {
         return Promise.resolve({headers: {"Content-Type": "application/json"}});
     }
 });

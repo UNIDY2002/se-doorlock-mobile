@@ -8,6 +8,8 @@ export const GET_DOOR_DEVICES_URL = `${BASE_URL}/v1/doorDevice`;
 
 export const BIND_DOOR_ADMIN_URL = `${BASE_URL}/v1/doorDevice/bind_admin`;
 
+export const UNBIND_DOOR_ADMIN_URL = `${BASE_URL}/v1/doorDevice/unbind_admin`;
+
 export const USER_PHOTO_URL = `${BASE_URL}/v1/doorUser/photos`;
 
 export const ASSETS_URL = `${BASE_URL}/assets`;

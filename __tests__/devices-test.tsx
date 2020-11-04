@@ -35,4 +35,8 @@ test("devices", async () => {
     // Find a device and view detail
     root.findAllByProps({testID: "DeviceItemInList"})[0].props.onPress();
     await sleep(800);
+
+    // Unbind a device
+    root.findAllByProps({testID: "unbindDevice"})[0].props.onPress();
+    await sleep(800);
 });

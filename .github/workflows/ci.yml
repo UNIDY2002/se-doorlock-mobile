@@ -1,0 +1,16 @@
+name: Build iOS app
+
+on: push
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          yarn
+          cd ios && pod install && cd ..
+      - name: Run ios app
+        run: |
+          yarn ios

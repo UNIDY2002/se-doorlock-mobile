@@ -71,14 +71,16 @@ const LoginUI = ({
             <TouchableOpacity
                 style={styles.loginButtonStyle}
                 disabled={username.length === 0 || password.length === 0}
-                onPress={loginSuite}>
+                onPress={loginSuite}
+                testID="loginTouchable">
                 <Text style={styles.loginButtonTextStyle}>登录</Text>
             </TouchableOpacity>
             <TouchableOpacity
                 style={styles.loginButtonStyle}
                 onPress={() =>
                     simpleAlert("请联系系统管理员分配账户", undefined, () => {})
-                }>
+                }
+                testID="registerTouchable">
                 <Text style={styles.loginButtonTextStyle}>注册</Text>
             </TouchableOpacity>
         </View>

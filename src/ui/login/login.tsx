@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {Button, TextInput, View} from "react-native";
-import {LoginNav} from "../../AuthFlow";
+import {simpleAlert} from "../../utils/alerts";
 import {connect} from "react-redux";
 import {DO_LOGIN} from "../../redux/constants";
 import styles from "../../styles/login";
@@ -11,11 +11,9 @@ import {login} from "../../network/core";
 import Snackbar from "react-native-snackbar";
 
 const LoginUI = ({
-    navigation,
     doLogin,
     auth,
 }: {
-    navigation: LoginNav;
     doLogin: (username: string, password: string) => void;
     auth: Auth;
 }) => {
@@ -73,7 +71,9 @@ const LoginUI = ({
             />
             <Button
                 title="注册"
-                onPress={() => navigation.navigate("Register", {username})}
+                onPress={() =>
+                    simpleAlert("请联系系统管理员分配账户", undefined, () => {})
+                }
             />
         </View>
     );

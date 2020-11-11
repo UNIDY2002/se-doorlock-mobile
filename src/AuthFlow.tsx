@@ -4,7 +4,6 @@ import {
     StackNavigationProp,
 } from "@react-navigation/stack";
 import {LoginScreen} from "./ui/login/login";
-import {RegisterScreen} from "./ui/login/register";
 import {connect} from "react-redux";
 import {State} from "./redux/store";
 import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
@@ -73,7 +72,6 @@ export const AuthFlowComponent = ({loggedIn}: {loggedIn: boolean}) =>
     ) : (
         <Stack.Navigator headerMode="none">
             <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Register" component={RegisterScreen} />
         </Stack.Navigator>
     );
 

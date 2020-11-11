@@ -12,8 +12,8 @@ import {enableFetchMocks} from 'jest-fetch-mock'
 enableFetchMocks()
 
 const users = [
-    {id: 0, name: "a", notes: "x", gender: "男", images: [{src: ""}]},
-    {id: 1, name: "b", notes: "y", gender: "女", images: [{src: ""}]},
+    {id: 0, name: "a", notes: "x", gender: "男", images: [{src: ""}], useDevices: []},
+    {id: 1, name: "b", notes: "y", gender: "女", images: [{src: ""}], useDevices: []},
 ];
 const devices = [{id: 1, description: "p"}, {id: 2, description: "q"}];
 

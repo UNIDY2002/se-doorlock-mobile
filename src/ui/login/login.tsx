@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Button, TextInput, View} from "react-native";
+import {Image, Text, TextInput, View} from "react-native";
 import {simpleAlert} from "../../utils/alerts";
 import {connect} from "react-redux";
 import {DO_LOGIN} from "../../redux/constants";
@@ -9,6 +9,7 @@ import {State} from "../../redux/store";
 import {Auth} from "../../redux/states/auth";
 import {login} from "../../network/core";
 import Snackbar from "react-native-snackbar";
+import {TouchableOpacity} from "react-native-gesture-handler";
 
 const LoginUI = ({
     doLogin,
@@ -39,6 +40,7 @@ const LoginUI = ({
     }, []);
     return (
         <View style={styles.container}>
+            <Image source={require("../../../icon.png")} style={{margin: 30}} />
             <View style={styles.textInputContainer}>
                 <View style={styles.textInputIconContainer}>
                     <Icon name="user" size={14} />
@@ -46,6 +48,7 @@ const LoginUI = ({
                 <TextInput
                     testID="usernameInput"
                     style={styles.textInput}
+                    selectionColor="tomato"
                     defaultValue={username}
                     onChangeText={setUsername}
                     placeholder="用户名"
@@ -58,23 +61,26 @@ const LoginUI = ({
                 <TextInput
                     testID="passwordInput"
                     style={styles.textInput}
+                    selectionColor="tomato"
                     defaultValue={password}
                     onChangeText={setPassword}
                     placeholder="密码"
                     secureTextEntry
                 />
             </View>
-            <Button
-                title="登录"
+            <TouchableOpacity
+                style={styles.loginButtonStyle}
                 disabled={username.length === 0 || password.length === 0}
-                onPress={loginSuite}
-            />
-            <Button
-                title="注册"
+                onPress={loginSuite}>
+                <Text style={styles.loginButtonTextStyle}>登录</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+                style={styles.loginButtonStyle}
                 onPress={() =>
                     simpleAlert("请联系系统管理员分配账户", undefined, () => {})
-                }
-            />
+                }>
+                <Text style={styles.loginButtonTextStyle}>注册</Text>
+            </TouchableOpacity>
         </View>
     );
 };

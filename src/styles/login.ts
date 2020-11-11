@@ -18,4 +18,17 @@ export default StyleSheet.create({
         width: 16,
         alignItems: "flex-end",
     },
+    loginButtonStyle: {
+        height: 35,
+        width: 100,
+        backgroundColor: "tomato",
+        marginVertical: 10,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 8,
+    },
+    loginButtonTextStyle: {
+        color: "white",
+        fontWeight: "bold",
+    },
 });

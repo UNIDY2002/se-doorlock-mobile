@@ -11,4 +11,5 @@ export interface User {
     name: string;
     gender: Gender;
     description: string;
+    useDevices: number[];
 }

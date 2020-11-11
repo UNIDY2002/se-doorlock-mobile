@@ -35,6 +35,7 @@ export const ModifyUserScreen = ({
     );
     const [cameraOn, setCameraOn] = useState(false);
     const [photos, setPhotos] = useState<AuthConfig[]>([]);
+    const [useDevices, setUseDevices] = useState<number[]>([]);
 
     useEffect(() => {
         if (route.params) {
@@ -49,6 +50,7 @@ export const ModifyUserScreen = ({
                     setDescription(user.description);
                 }
                 setPhotos(images);
+                setUseDevices(user.useDevices);
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -149,10 +151,17 @@ export const ModifyUserScreen = ({
                                   name,
                                   description,
                                   gender,
+                                  useDevices,
                                   photos.map(({src}) => src),
                               )
                             : updateDoorUser(
-                                  {...route.params, name, description, gender},
+                                  {
+                                      ...route.params,
+                                      name,
+                                      description,
+                                      gender,
+                                      useDevices,
+                                  },
                                   photos.map(({src}) => src),
                               )
                         )

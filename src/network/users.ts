@@ -21,14 +21,16 @@ export const getDoorUser = (uid: number): Promise<[User, AuthConfig[]]> =>
             notes,
             gender,
             images,
+            useDevices,
         }: {
             id: number;
             name: string;
             notes: string;
             gender: Gender;
             images: {src: string}[];
+            useDevices: number[];
         }) => [
-            {id, name, description: notes, gender},
+            {id, name, description: notes, gender, useDevices},
             images.map(({src}) => ({
                 src,
                 uri: `${ASSETS_URL}/${src}`,
@@ -41,6 +43,7 @@ export const createDoorUser = (
     name: string,
     description: string,
     gender: Gender,
+    useDevices: number[],
     images: string[],
 ) =>
     authedFetch(GET_DOOR_USERS_URL, {
@@ -50,6 +53,7 @@ export const createDoorUser = (
             notes: description,
             gender,
             images: images.map((src) => ({src})),
+            useDevices,
         }),
         headers: {"Content-Type": "application/json"},
     });

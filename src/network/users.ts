@@ -59,7 +59,7 @@ export const createDoorUser = (
     });
 
 export const updateDoorUser = (
-    {id, name, description, gender}: User,
+    {id, name, description, gender, useDevices}: User,
     images: string[],
 ) =>
     authedFetch(`${GET_DOOR_USERS_URL}/${id}`, {
@@ -69,6 +69,7 @@ export const updateDoorUser = (
             name,
             notes: description,
             gender,
+            useDevices,
             images: images.map((src) => ({src})),
         }),
         headers: {"Content-Type": "application/json"},

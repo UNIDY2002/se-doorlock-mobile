@@ -61,6 +61,10 @@ test("users", async () => {
     await sleep(500);
     root.findByProps({testID: "viewUserHistoryButton"}).props.onPress();
     await sleep(500);
+    root.findByProps({testID: "setUseDevices-1"}).props.onPress();
+    await sleep(500);
+    root.findByProps({testID: "setUseDevices-1"}).props.onPress();
+    await sleep(500);
 
     // Delete a user
     expect(root.findAllByType(RectButton).length).toEqual(3);

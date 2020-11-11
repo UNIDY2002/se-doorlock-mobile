@@ -1,5 +1,6 @@
 import "react-native-gesture-handler/jestSetup";
 import mockAsyncStorage from "@react-native-community/async-storage/jest/async-storage-mock";
+import mockReact from "react";
 
 require("./.mockbackend.js");
 
@@ -23,9 +24,14 @@ function FormDataMock() {
 
 global.FormData = FormDataMock
 
-jest.mock("src/components/camera");
+jest.mock("src/components/camera", () => ({
+    Camera: ({onPress}) =>
+        mockReact.createElement("Button", {title:"dummy", onPress:() => onPress && onPress(""), testID:"CameraForTest"})
+}));
 
-jest.mock("src/components/DatePickerTrigger");
+jest.mock("src/components/DatePickerTrigger", () => ({
+    DatePickerTrigger: () => mockReact.createElement("Text")
+}));
 
 jest.mock("src/utils/alerts", () => ({
     simpleAlert: (title, message, onConfirm) => {

@@ -1,12 +1,13 @@
 import React, {useState} from "react";
 import {AdvancedNav} from "./advancedStack";
 import {ScrollView, Text, TextInput, View} from "react-native";
-import {SelectorItem, TouchableItem} from "../../components/touchableItems";
+import {TouchableItem} from "../../components/touchableItems";
 import Icon from "react-native-vector-icons/FontAwesome";
 import {Gender} from "../../models/users";
 import form from "../../styles/form";
 import {DatePickerTrigger} from "../../components/DatePickerTrigger";
 import dayjs from "dayjs";
+import {NameAndGender} from "../../utils/forms";
 
 export const AdvancedQueryScreen = ({
     navigation,
@@ -21,41 +22,13 @@ export const AdvancedQueryScreen = ({
 
     return (
         <ScrollView style={{padding: 10}}>
-            <View style={form.row}>
-                <Text style={{flex: 1, textAlign: "center"}}>姓名</Text>
-                <TextInput
-                    style={{flex: 2}}
-                    testID="advancedName"
-                    placeholder="姓名"
-                    value={name}
-                    onChangeText={setName}
-                />
-            </View>
-            <View style={form.row}>
-                <Text style={{flex: 1, textAlign: "center"}}>性别</Text>
-                <View style={{flexDirection: "row", flex: 2}}>
-                    <SelectorItem
-                        item="男"
-                        value={gender}
-                        setValue={setGender}
-                    />
-                    <SelectorItem
-                        item="女"
-                        value={gender}
-                        setValue={setGender}
-                    />
-                    <SelectorItem
-                        item="未知"
-                        value={gender}
-                        setValue={setGender}
-                    />
-                    <SelectorItem
-                        item="不选"
-                        value={gender}
-                        setValue={setGender}
-                    />
-                </View>
-            </View>
+            <NameAndGender
+                name={name}
+                setName={setName}
+                gender={gender}
+                setGender={setGender}
+                genderOptions={["男", "女", "未知", "不选"]}
+            />
             <View style={form.row}>
                 <Text style={{flex: 1, textAlign: "center"}}>设备ID</Text>
                 <TextInput

@@ -9,14 +9,10 @@ export const config = (
 ): Config => {
     switch (type) {
         case ADD_ACTIVITY:
-            if (state.activities.indexOf(payload) === -1) {
-                return {
-                    ...state,
-                    activities: state.activities.concat(payload),
-                };
-            } else {
-                return state;
-            }
+            return {
+                ...state,
+                activities: state.activities.concat(payload),
+            };
         case REMOVE_ACTIVITY:
             return {
                 ...state,

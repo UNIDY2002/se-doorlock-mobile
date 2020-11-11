@@ -17,9 +17,9 @@ import {AuthConfig, Gender} from "../../models/users";
 import {postFile} from "../../network/core";
 import {simpleAlert} from "../../utils/alerts";
 import form from "../../styles/form";
-import {SelectorItem} from "../../components/touchableItems";
 import {Device} from "../../models/devices";
 import {getDoorDevices} from "../../network/devices";
+import {NameAndGender} from "../../utils/forms";
 
 export const ModifyUserScreen = ({
     navigation,
@@ -43,15 +43,13 @@ export const ModifyUserScreen = ({
     useEffect(() => {
         if (route.params) {
             getDoorUser(route.params.id).then(([user, images]) => {
-                if (route.params?.name === name) {
-                    setName(user.name);
-                }
-                if (route.params?.gender === gender) {
-                    setGender(user.gender);
-                }
-                if (route.params?.description === description) {
-                    setDescription(user.description);
-                }
+                setName((o) => (route.params?.name === o ? user.name : o));
+                setGender((o) =>
+                    route.params?.gender === o ? user.gender : o,
+                );
+                setDescription((o) =>
+                    route.params?.description === o ? user.description : o,
+                );
                 setPhotos(images);
                 setUseDevices(user.useDevices);
             });
@@ -87,36 +85,13 @@ export const ModifyUserScreen = ({
     ) : (
         <ScrollView style={{flex: 1}}>
             <View style={{alignItems: "center"}}>
-                <View style={form.row}>
-                    <Text style={{flex: 1, textAlign: "center"}}>姓名</Text>
-                    <TextInput
-                        style={{flex: 2}}
-                        testID="modifyUserName"
-                        placeholder="姓名"
-                        value={name}
-                        onChangeText={setName}
-                    />
-                </View>
-                <View style={form.row}>
-                    <Text style={{flex: 1, textAlign: "center"}}>性别</Text>
-                    <View style={{flexDirection: "row", flex: 2}}>
-                        <SelectorItem
-                            item="男"
-                            value={gender}
-                            setValue={setGender}
-                        />
-                        <SelectorItem
-                            item="女"
-                            value={gender}
-                            setValue={setGender}
-                        />
-                        <SelectorItem
-                            item="未知"
-                            value={gender}
-                            setValue={setGender}
-                        />
-                    </View>
-                </View>
+                <NameAndGender
+                    name={name}
+                    setName={setName}
+                    gender={gender}
+                    setGender={setGender}
+                    genderOptions={["男", "女", "未知"]}
+                />
                 <View style={form.row}>
                     <Text style={{flex: 1, textAlign: "center"}}>备注信息</Text>
                     <TextInput

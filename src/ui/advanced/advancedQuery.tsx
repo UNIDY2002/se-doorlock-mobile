@@ -1,8 +1,12 @@
 import React, {useState} from "react";
 import {AdvancedNav} from "./advancedStack";
-import {ScrollView, Text, TextInput, View} from "react-native";
-import {TouchableItem} from "../../components/touchableItems";
-import Icon from "react-native-vector-icons/FontAwesome";
+import {
+    ScrollView,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
+} from "react-native";
 import {Gender} from "../../models/users";
 import form from "../../styles/form";
 import {DatePickerTrigger} from "../../components/DatePickerTrigger";
@@ -57,23 +61,33 @@ export const AdvancedQueryScreen = ({
                     flex={2}
                 />
             </View>
-            <TouchableItem
-                text="查询"
-                onPress={() =>
-                    navigation.navigate("AdvancedHistory", {
-                        name,
-                        gender: gender === "不选" ? undefined : gender,
-                        deviceId:
-                            String(Number(deviceId)) === deviceId
-                                ? Number(deviceId)
-                                : undefined,
-                        begin: dayjs(begin).startOf("date").toDate().valueOf(),
-                        end: dayjs(end).endOf("date").toDate().valueOf(),
-                    })
-                }
-                icon={<Icon name="play" size={16} />}
-                testID="enterAdvancedHistory"
-            />
+            <View style={form.row}>
+                <TouchableOpacity
+                    style={{
+                        flex: 1,
+                        backgroundColor: "#ccc",
+                        marginHorizontal: 30,
+                        padding: 10,
+                    }}
+                    onPress={() =>
+                        navigation.navigate("AdvancedHistory", {
+                            name,
+                            gender: gender === "不选" ? undefined : gender,
+                            deviceId:
+                                String(Number(deviceId)) === deviceId
+                                    ? Number(deviceId)
+                                    : undefined,
+                            begin: dayjs(begin)
+                                .startOf("date")
+                                .toDate()
+                                .valueOf(),
+                            end: dayjs(end).endOf("date").toDate().valueOf(),
+                        })
+                    }
+                    testID="enterAdvancedHistory">
+                    <Text style={{textAlign: "center"}}>查询</Text>
+                </TouchableOpacity>
+            </View>
         </ScrollView>
     );
 };

@@ -15,6 +15,8 @@ import {connect} from "react-redux";
 import {Activity} from "../../redux/states/config";
 import {ADD_ACTIVITY} from "../../redux/constants";
 import {State} from "../../redux/store";
+import {SelectorItem} from "../../components/touchableItems";
+import {DayOfWeek, dayOfWeekToString} from "../../utils/dayOfWeek";
 
 const hint = (text: string) =>
     Snackbar.show({text, duration: Snackbar.LENGTH_SHORT});
@@ -41,7 +43,7 @@ const AddActivityUI = ({
     activities: Activity[];
     create: (activity: Activity) => void;
 }) => {
-    const [repeat, setRepeat] = useState("12345");
+    const [repeat, setRepeat] = useState<DayOfWeek[]>([1, 2, 3, 4, 5]);
     const [beginHour, setBeginHour] = useState("07");
     const [beginMinute, setBeginMinute] = useState("00");
     const [endHour, setEndHour] = useState("09");
@@ -64,12 +66,32 @@ const AddActivityUI = ({
             <View style={{alignItems: "center", flex: 1}}>
                 <View style={form.row}>
                     <Text style={{flex: 1, textAlign: "center"}}>重复</Text>
-                    <TextInput
-                        style={{flex: 2, textAlign: "center"}}
-                        testID="addActivityRepeat"
-                        value={repeat}
-                        onChangeText={setRepeat}
-                    />
+                    <View
+                        style={{
+                            flexDirection: "row",
+                            flex: 2,
+                            justifyContent: "center",
+                        }}>
+                        {[0, 1, 2, 3, 4, 5, 6].map((day) => (
+                            <SelectorItem
+                                item={day as DayOfWeek}
+                                value={
+                                    (repeat.includes(day as DayOfWeek)
+                                        ? day
+                                        : -1) as DayOfWeek
+                                }
+                                setValue={(v) =>
+                                    setRepeat((o) =>
+                                        o.includes(v)
+                                            ? o.filter((it) => it !== v)
+                                            : o.concat(v),
+                                    )
+                                }
+                                textMapper={dayOfWeekToString}
+                                key={day}
+                            />
+                        ))}
+                    </View>
                 </View>
                 <View style={form.row}>
                     <Text style={{flex: 1, textAlign: "center"}}>开始时间</Text>
@@ -163,35 +185,22 @@ const AddActivityUI = ({
                                 return;
                             }
                             const activity: Activity = {
-                                repeat: repeat.split("").map(Number),
+                                repeat: [...repeat].sort((a, b) => a - b),
                                 beginHour: Number(beginHour),
                                 beginMinute: Number(beginMinute),
                                 endHour: Number(endHour),
                                 endMinute: Number(endMinute),
-                                users,
+                                users: [...users].sort((a, b) => a - b),
                             };
                             for (const e of activities) {
                                 if (
-                                    String(
-                                        [...e.repeat].sort((a, b) => a - b),
-                                    ) ===
-                                        String(
-                                            [...activity.repeat].sort(
-                                                (a, b) => a - b,
-                                            ),
-                                        ) &&
+                                    String(e.repeat) ===
+                                        String(activity.repeat) &&
                                     e.beginHour === activity.beginHour &&
                                     e.beginMinute === activity.beginMinute &&
                                     e.endHour === activity.endHour &&
                                     e.endMinute === activity.endMinute &&
-                                    String(
-                                        [...e.users].sort((a, b) => a - b),
-                                    ) ===
-                                        String(
-                                            [...activity.users].sort(
-                                                (a, b) => a - b,
-                                            ),
-                                        )
+                                    String(e.users) === String(activity.users)
                                 ) {
                                     hint("已有相同打卡活动，请修改后重试。");
                                     return;

@@ -12,6 +12,7 @@ import {AdvancedNav} from "./advancedStack";
 import {Activity} from "../../redux/states/config";
 import {REMOVE_ACTIVITY} from "../../redux/constants";
 import dayjs from "dayjs";
+import {DayOfWeek, dayOfWeekToString} from "../../utils/dayOfWeek";
 
 const pad = (data: number) => {
     const str = String(data);
@@ -58,19 +59,19 @@ const ActivitiesUI = ({
                 <TouchableOpacity
                     style={Material.card}
                     onPress={() => {
-                        if (item.repeat.indexOf(dayjs().day()) === -1) {
+                        if (item.repeat.includes(dayjs().day() as DayOfWeek)) {
+                            navigation.navigate("ActivityDetail", item);
+                        } else {
                             simpleAlert(
                                 "今天没有打卡活动",
                                 undefined,
                                 () => {},
                             );
-                        } else {
-                            navigation.navigate("ActivityDetail", item);
                         }
                     }}
                     testID="activityItem">
                     <Text style={{fontSize: 20, fontWeight: "bold"}}>
-                        重复：{item.repeat}
+                        重复：{item.repeat.map(dayOfWeekToString).join(" ")}
                     </Text>
                     <Text style={{fontSize: 16}}>
                         起始时间：{pad(item.beginHour)}:{pad(item.beginMinute)}

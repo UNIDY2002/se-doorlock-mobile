@@ -52,16 +52,20 @@ export const SelectorItem = <T,>({
     item,
     value,
     setValue,
+    textMapper,
 }: {
     item: T;
     value: T;
     setValue: (newValue: T) => void;
+    textMapper?: (e: T) => string;
 }) => (
     <TouchableOpacity
         onPress={() => setValue(item)}
         style={{padding: 5}}
         testID={`selectItem${item}`}>
-        <Text style={{color: item === value ? "tomato" : "black"}}>{item}</Text>
+        <Text style={{color: item === value ? "tomato" : "black"}}>
+            {textMapper ? textMapper(item) : item}
+        </Text>
     </TouchableOpacity>
 );
 

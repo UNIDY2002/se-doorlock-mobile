@@ -23,4 +23,5 @@ export interface ActivityDetail {
     deviceId?: number;
     name: string;
     time?: number;
+    deviceDescription?: string;
 }

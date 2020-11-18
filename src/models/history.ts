@@ -6,6 +6,7 @@ export interface History {
     deviceId: number;
     userName: string;
     time: number;
+    deviceDescription: string;
 }
 
 export interface Query {

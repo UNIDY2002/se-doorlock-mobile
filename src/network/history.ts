@@ -52,18 +52,21 @@ export const getHistory = (query: Query): Promise<History[]> =>
                 time,
                 user_id,
                 user_name,
+                device_description,
             }: {
                 device_id: number;
                 id: number;
                 time: string;
                 user_id: number;
                 user_name: string;
+                device_description: string;
             }) => ({
                 deviceId: device_id,
                 id,
                 time,
                 userId: user_id,
                 userName: user_name,
+                deviceDescription: device_description,
             }),
         ),
     );

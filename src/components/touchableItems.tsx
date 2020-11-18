@@ -58,6 +58,7 @@ export const SelectorItem = <T,>({
     value: T;
     setValue: (newValue: T) => void;
     textMapper?: (e: T) => string;
+    testID?: string;
 }) => (
     <TouchableOpacity
         onPress={() => setValue(item)}

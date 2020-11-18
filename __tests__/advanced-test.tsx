@@ -28,8 +28,18 @@ test("devices", async () => {
     await sleep(600);
     root.findByProps({testID: "addActivityUser-1"}).props.onPress();
     await sleep(500);
+    root.findByProps({testID: "activitySetDayOfWeek0"}).props.setValue(0);
+    root.findByProps({testID: "activitySetDayOfWeek1"}).props.setValue(1);
     root.findByProps({testID: "addActivityUser-1"}).props.onPress();
     root.findByProps({testID: "addActivityUser-0"}).props.onPress();
+    // This should also fail
+    root.findByProps({testID: "submitNewActivity"}).props.onPress();
+    await sleep(600);
+    root.findByProps({testID: "addActivityDevice-1"}).props.onPress();
+    root.findByProps({testID: "addActivityDevice-1"}).props.onPress();
+    root.findByProps({testID: "addActivityUser-1"}).props.onPress();
+    root.findByProps({testID: "addActivityDevice-2"}).props.onPress();
+    root.findByProps({testID: "addActivityDevice-1"}).props.onPress();
     root.findByProps({testID: "addActivityBeginHour"}).props.onChangeText("10");
     root.findByProps({testID: "addActivityBeginMinute"}).props.onChangeText(
         "40",

@@ -96,6 +96,7 @@ const AddActivityUI = ({
                                 }
                                 textMapper={dayOfWeekToString}
                                 key={day}
+                                testID={"activitySetDayOfWeek" + day}
                             />
                         ))}
                     </View>

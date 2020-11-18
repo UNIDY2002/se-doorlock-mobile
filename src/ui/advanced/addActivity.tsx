@@ -17,6 +17,8 @@ import {ADD_ACTIVITY} from "../../redux/constants";
 import {State} from "../../redux/store";
 import {SelectorItem} from "../../components/touchableItems";
 import {DayOfWeek, dayOfWeekToString} from "../../utils/dayOfWeek";
+import {Device} from "../../models/devices";
+import {getDoorDevices} from "../../network/devices";
 
 const hint = (text: string) =>
     Snackbar.show({text, duration: Snackbar.LENGTH_SHORT});
@@ -50,10 +52,15 @@ const AddActivityUI = ({
     const [endMinute, setEndMinute] = useState("00");
     const [users, setUsers] = useState<number[]>([]);
     const [userData, setUserData] = useState<User[]>([]);
+    const [devices, setDevices] = useState<number[]>([]);
+    const [deviceData, setDeviceData] = useState<Device[]>([]);
 
     useEffect(() => {
-        getDoorUsers()
-            .then(setUserData)
+        Promise.all([getDoorUsers(), getDoorDevices()])
+            .then(([u, d]) => {
+                setUserData(u);
+                setDeviceData(d);
+            })
             .catch(() => {
                 navigation.pop();
                 hint("网络异常，请稍后重试。");
@@ -125,10 +132,18 @@ const AddActivityUI = ({
                         onChangeText={setEndMinute}
                     />
                 </View>
+                <View
+                    style={{
+                        backgroundColor: "#ccc",
+                        height: 1,
+                        width: "70%",
+                        marginBottom: 10,
+                    }}
+                />
                 {userData.map(({name, id}) => (
                     <TouchableOpacity
                         style={form.row}
-                        key={id}
+                        key={"user" + id}
                         testID={"addActivityUser-" + id}
                         onPress={() =>
                             setUsers((prevState) =>
@@ -145,6 +160,34 @@ const AddActivityUI = ({
                         </Text>
                     </TouchableOpacity>
                 ))}
+                <View
+                    style={{
+                        height: 1,
+                        width: "70%",
+                        backgroundColor: "#ccc",
+                        margin: 10,
+                    }}
+                />
+                {deviceData.map(({description, id}) => (
+                    <TouchableOpacity
+                        style={form.row}
+                        key={"device" + id}
+                        testID={"addActivityDevice-" + id}
+                        onPress={() =>
+                            setDevices((prevState) =>
+                                prevState.indexOf(id) === -1
+                                    ? prevState.concat(id)
+                                    : prevState.filter((it) => it !== id),
+                            )
+                        }>
+                        <Text style={{flex: 1, textAlign: "center"}}>
+                            {description}
+                        </Text>
+                        <Text style={{flex: 2, textAlign: "center"}}>
+                            {devices.indexOf(id) === -1 ? "不选" : "选"}
+                        </Text>
+                    </TouchableOpacity>
+                ))}
                 <View style={form.row}>
                     <TouchableOpacity
                         style={{
@@ -156,6 +199,10 @@ const AddActivityUI = ({
                         onPress={() => {
                             if (users.length === 0) {
                                 hint("请选择至少一名用户。");
+                                return;
+                            }
+                            if (devices.length === 0) {
+                                hint("请选择至少一台设备。");
                                 return;
                             }
                             if (
@@ -191,6 +238,7 @@ const AddActivityUI = ({
                                 endHour: Number(endHour),
                                 endMinute: Number(endMinute),
                                 users: [...users].sort((a, b) => a - b),
+                                devices: [...devices].sort((a, b) => a - b),
                             };
                             for (const e of activities) {
                                 if (
@@ -200,7 +248,10 @@ const AddActivityUI = ({
                                     e.beginMinute === activity.beginMinute &&
                                     e.endHour === activity.endHour &&
                                     e.endMinute === activity.endMinute &&
-                                    String(e.users) === String(activity.users)
+                                    String(e.users) ===
+                                        String(activity.users) &&
+                                    String(e.devices) ===
+                                        String(activity.devices)
                                 ) {
                                     hint("已有相同打卡活动，请修改后重试。");
                                     return;

@@ -7,6 +7,7 @@ export interface Activity {
     endHour: number;
     endMinute: number;
     users: number[];
+    devices: number[];
 }
 
 export interface Config {

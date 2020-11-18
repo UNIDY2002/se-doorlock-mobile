@@ -7,7 +7,7 @@ import dayjs from "dayjs";
 
 export const ActivityDetailScreen = simpleRefreshList(
     ({route}) => getActivityDetail(route.params),
-    ({name, deviceId, time}) => (
+    ({name, deviceId, time, deviceDescription}) => (
         <TouchableOpacity style={Material.card} testID="userHistoryItem">
             <Text style={{fontSize: 20, fontWeight: "bold"}}>
                 {name}
@@ -15,8 +15,10 @@ export const ActivityDetailScreen = simpleRefreshList(
                     <Text style={{color: "red"}}> [未打卡]</Text>
                 )}
             </Text>
-            {deviceId && (
-                <Text style={{lineHeight: 24}}>进入门禁 #{deviceId}</Text>
+            {deviceId && deviceDescription && (
+                <Text style={{lineHeight: 24}}>
+                    进入门禁 {deviceDescription} (#{deviceId})
+                </Text>
             )}
             {time && (
                 <Text style={{lineHeight: 24}}>

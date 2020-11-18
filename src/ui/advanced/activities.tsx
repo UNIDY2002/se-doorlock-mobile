@@ -79,6 +79,9 @@ const ActivitiesUI = ({
                     <Text style={{fontSize: 16}}>
                         终止时间：{pad(item.endHour)}:{pad(item.endMinute)}
                     </Text>
+                    <Text style={{fontSize: 16}}>
+                        适用门禁：{item.devices.map((it) => `#${it}`).join(" ")}
+                    </Text>
                 </TouchableOpacity>
             </Swipeable>
         )}

@@ -107,6 +107,7 @@ export const getActivityDetail = async ({
                 name,
                 deviceId: history?.deviceId,
                 time: history?.time,
+                deviceDescription: history?.deviceDescription,
             };
         });
 };

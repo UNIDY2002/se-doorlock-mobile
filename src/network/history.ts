@@ -77,6 +77,7 @@ export const getActivityDetail = async ({
     endHour,
     endMinute,
     users,
+    devices,
 }: Activity): Promise<ActivityDetail[]> => {
     const [filteredHistory, allUsers]: [History[], User[]] = await Promise.all([
         getHistory({
@@ -98,7 +99,9 @@ export const getActivityDetail = async ({
     return allUsers
         .filter((it) => users.indexOf(it.id) !== -1)
         .map(({id, name}) => {
-            const history = filteredHistory.find((it) => it.userId === id);
+            const history = filteredHistory.find(
+                (it) => it.userId === id && devices.includes(it.deviceId),
+            );
             return {
                 userId: id,
                 name,

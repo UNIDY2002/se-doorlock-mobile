@@ -28,9 +28,9 @@ fetchMock.mockIf(/^.*$/, (req) => {
             });
         case GET_DOOR_USERS_URL:
             if (req.method === "POST" && JSON.parse(String(req.body)).name.length) {
-                const {name, notes, gender, images} = JSON.parse(String(req.body));
+                const {name, notes, gender, images, useDevices} = JSON.parse(String(req.body));
                 const id = users.length ? users[users.length - 1].id + 1 : 0;
-                users.push({id, name, notes, gender, images});
+                users.push({id, name, notes, gender, images, useDevices});
             }
             return Promise.resolve({
                 body: JSON.stringify(req.method === "GET"
@@ -77,6 +77,7 @@ fetchMock.mockIf(/^.*$/, (req) => {
                 device_id: 1,
                 user_name: "foo",
                 time: "time",
+                deviceDescription: "description",
             }]),
             headers: {"Content-Type": "application/json"},
         })

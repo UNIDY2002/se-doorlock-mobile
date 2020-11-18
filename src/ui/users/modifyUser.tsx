@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
     View,
+    Platform,
 } from "react-native";
 import React, {useEffect, useState} from "react";
 import {ModifyUserRouteProp, UsersNav} from "./usersStack";
@@ -119,13 +120,31 @@ export const ModifyUserScreen = ({
                                               ),
                                     )
                                 }>
-                                <Text style={{flex: 1, textAlign: "center"}}>
+                                <Text
+                                    style={{
+                                        flex: 1,
+                                        textAlign: "center",
+                                        textDecorationLine: useDevices.includes(
+                                            device.id,
+                                        )
+                                            ? "none"
+                                            : "line-through",
+                                    }}>
                                     {device.description}
                                 </Text>
-                                <Text style={{flex: 1, textAlign: "center"}}>
+                                <Text
+                                    style={{
+                                        flex: 1,
+                                        textAlign: "center",
+                                        textDecorationLine: useDevices.includes(
+                                            device.id,
+                                        )
+                                            ? "none"
+                                            : "line-through",
+                                    }}>
                                     {useDevices.indexOf(device.id) === -1
-                                        ? "不选"
-                                        : "选"}
+                                        ? "不可用"
+                                        : "可用"}
                                 </Text>
                             </TouchableOpacity>
                         ))}
@@ -233,7 +252,9 @@ export const ModifyUserScreen = ({
                                 borderWidth: 1,
                                 borderColor: "#CCC",
                             }}
-                            resizeMode="contain"
+                            resizeMode={
+                                Platform.OS === "android" ? "cover" : "contain"
+                            }
                         />
                     </TouchableWithoutFeedback>
                 ))}
